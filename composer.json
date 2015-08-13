@@ -1,0 +1,28 @@
+{
+  "name": "locomotivemtl/charcoal-cms-ext",
+  "version": "1.0.0",
+  "type": "charcoal-module",
+  "description": "A CMS module extension playground.",
+  "license": "© 2015 — Locomotive",
+  "keywords": ["charcoal", "locomotive", "cms", "playground"],
+  "support": {
+    "issues": "https://github.com/locomotivemtl/charcoal-legacy-cms-ext/issues",
+    "source": "https://github.com/locomotivemtl/charcoal-legacy-cms-ext"
+  },
+  "authors": [
+    {
+      "name": "Chauncey McAskill",
+      "email": "chauncey@locomotive.ca"
+    }
+  ],
+  "require": {
+    "php": ">=5.4.0",
+    "locomotivemtl/charcoal-composer-installer": "@dev"
+  },
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/mducharme/charcoal-composer-installer"
+    }
+  ]
+}
