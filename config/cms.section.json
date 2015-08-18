@@ -1,0 +1,531 @@
+{
+  "config_type": "object",
+  "config_version": 1,
+
+  "module": "cms",
+
+  "name": {
+    "en": "Site Section",
+    "fr": "Section de site"
+  },
+
+  "revision": true,
+
+  "properties": {
+    "ident": {
+      "type": "string",
+      "unique": true,
+      "label": {
+        "en": "Object Identifier",
+        "fr": "Identifiant d'objet"
+      },
+      "description": {
+        "en": "The Identifier is used instead of the ID (an integer) as an easy keyword to load a specific Section in code.",
+        "fr": "L'identifiant est utilisé à la place de l'ID (numérique) comme un mot-clé facile pour récupérer une Section spécifique dans le code."
+      },
+      "notes": {
+        "en": "Leave blank to auto-generate from title.",
+        "fr": "Laisser vide pour générer automatiquement à partir du titre."
+      }
+    },
+    "slug": {
+      "type": "string",
+      "l10n": true,
+      "label": {
+        "en": "URI Identifier",
+        "fr": "Identifiant d'URI"
+      },
+      "description": {
+        "en": "<p>The Identifier has a dual-purpose: </p><ol><li>Used instead of the ID (an integer) as an easy keyword to load a specific Section in code;</li><li>Used as a URL-friendly version of the Section's title.</li></ol>",
+        "fr": "<p>L'identifiant sert un double usage</p><ol><li>Utilisé à la place de l'ID (numérique) comme un mot-clé facile pour récupérer une Section spécifique dans le code;</li><li>Utilisé comme une version conviviale pour un URL du titre de la section.</li></ol>"
+      },
+      "notes": {
+        "en": "Leave blank to auto-generate from title.",
+        "fr": "Laisser vide pour générer automatiquement à partir du titre."
+      }
+    },
+    "external_url": {
+      "type": "string",
+      "l10n": true,
+      "label": {
+        "en": "External URL",
+        "fr": "URL externe"
+      }
+    },
+    "section_type": {
+      "type": "choice",
+      "label": {
+        "en": "Section Type",
+        "fr": "Type de section"
+      },
+      "choices": {
+        "content": {
+          "label": {
+            "en": "Standard (content)",
+            "fr": "Standard (contenu)"
+          }
+        },
+        "multi_content": {
+          "label": {
+            "en": "Multi-Content",
+            "fr": "Multi-contenu"
+          }
+        },
+        "empty": {
+          "label": {
+            "en": "Empty",
+            "fr": "Vide"
+          }
+        },
+        "dashboard": {
+          "label": {
+            "en": "Dashboard",
+            "fr": "Dashboard"
+          }
+        },
+        "object": {
+          "label": {
+            "en": "Object",
+            "fr": "Objet"
+          }
+        },
+        "object_list": {
+          "label": {
+            "en": "Object List",
+            "fr": "Liste d'objets"
+          }
+        },
+        "master": {
+          "label": {
+            "en": "Master Section",
+            "fr": "Section parente"
+          }
+        },
+        "external": {
+          "label": {
+            "en": "External Link",
+            "fr": "Lien externe"
+          }
+        },
+        "home": {
+          "label": {
+            "en": "Home",
+            "fr": "Accueil"
+          }
+        }
+      }
+    },
+    "template": {
+      "type": "object",
+      "obj_type": "CMS_Template",
+      "required": false,
+      "foreign_key": "ident",
+      "label": {
+        "en": "Template",
+        "fr": "Gabarit"
+      }
+    },
+    "template_options": {
+      "type": "json",
+      "label": {
+        "en": "Template configuration options",
+        "fr": "Options de configuration du gabarit"
+      },
+      "description": {
+        "en": "Every template can have a specific set of configuration options.",
+        "fr": "Chaque gabarit peut avoir ses options de configuration spécifiques."
+      }
+    },
+    "category": {
+      "active": false
+    },
+    "categories": {
+      "type": "object",
+      "input_type": "checkbox",
+      "obj_type": "CMS_Section_Category",
+      "foreign_key": "ident",
+      "multiple": true,
+      "label": {
+        "en": "Categories",
+        "fr": "Catégories"
+      }
+    },
+    "title": {
+      "type": "string",
+      "required": true,
+      "l10n": true,
+      "label": {
+        "en": "Title",
+        "fr": "Titre"
+      }
+    },
+    "subtitle": {
+      "type": "string",
+      "l10n": true,
+      "label": {
+        "en": "Sub-Title",
+        "fr": "Sous-Titre"
+      }
+    },
+    "summary": {
+      "type": "html",
+      "l10n": true,
+      "label": {
+        "en": "Summary",
+        "fr": "Sommaire"
+      },
+      "notes": {
+        "en": "Commonly used as an excerpt of the main content.",
+        "fr": "Souvent utilisé comme un extrait du contenu primaire."
+      }
+    },
+    "content": {
+      "type": "html",
+      "l10n": true,
+      "label": {
+        "en": "Content",
+        "fr": "Contenu"
+      }
+    },
+    "images": {
+      "type": "image",
+      "multiple": true,
+      "label": {
+        "en": "Image(s)",
+        "fr": "Image(s)"
+      },
+      "upload_path": "uploads/cms_sections/images/src/"
+    },
+    "thumbnails": {
+      "type": "image",
+      "multiple": true,
+      "label": {
+        "en": "Thumbnail(s)",
+        "fr": "Vignette(s)"
+      },
+      "notes":{
+        "en":"Small image used in page templates, lightboxes, and modals.",
+        "fr":"Petite image utilisée dans les gabarits de page et fenêtres modaux."
+      },
+      "fallback_properties":[
+        "images"
+      ],
+      "strip":true,
+      "display_options":{
+        "base":{
+          "alt":false,
+          "border":false,
+          "classes":false,
+          "data-attr":false,
+          "max-width":0,
+          "max-height":0
+        }
+      },
+      "upload_path": "uploads/cms_sections/images/thumb/"
+    },
+    "documents": {
+      "type": "file",
+      "multiple": true,
+      "l10n": true,
+      "label": {
+        "en": "Document(s)",
+        "fr": "Document(s)"
+      },
+      "upload_path": "uploads/cms_sections/documents/"
+    }
+  },
+
+  "data": {
+    "section_type": "content"
+  },
+
+  "sources": {
+    "default": {
+      "table": "cms_sections"
+    }
+  },
+  "default_source" : "default",
+
+  "lists": {
+    "admin": {
+      "label": {
+        "en": "List of Sections",
+        "fr": "Liste des sections"
+      },
+      "properties": [
+        "id",
+        "ident",
+        "master",
+        "title",
+        "active"
+      ],
+      "orders": {
+        "position": {
+          "property": "position",
+          "mode": "asc"
+        }
+      }
+    }
+  },
+  "default_list": "admin",
+
+  "forms": {
+    "admin": {
+      "label": {
+        "en": "Site Section",
+        "fr": "Section de site"
+      },
+      "groups": {
+        "info": {
+          "label": {
+            "en": "Section Information",
+            "fr": "Information de la section"
+          },
+          "properties": [
+            "id",
+            "section_type",
+            "master",
+            "ident",
+            "categories",
+            "active"
+          ],
+          "properties_options": {
+            "id": {
+              "hidden": true
+            },
+            "active": {
+              "hidden": true
+            },
+            "categories": {
+              "hidden": true
+            },
+            "section_type": {
+              "hidden": true
+            }
+          },
+          "priority": 10
+        },
+        "url": {
+          "label": {
+            "en": "URL Information",
+            "fr": "Information d'URL"
+          },
+          "l10n": true,
+          "l10n_options": {
+            "mode": "loop_group"
+          },
+          "properties": [
+            "slug",
+            "external_url"
+          ],
+          "priority": 12
+        },
+        "template": {
+          "label": {
+            "en": "Template Information",
+            "fr": "Information de gabarit"
+          },
+          "properties": [
+            "template",
+            "template_options"
+          ],
+          "properties_options": {
+            "template_options": {
+              "hidden": true
+            }
+          },
+          "priority": 14
+        },
+        "content": {
+          "label": {
+            "en": "Content",
+            "fr": "Contenu"
+          },
+          "l10n": true,
+          "l10n_options": {
+            "mode": "loop_group"
+          },
+          "properties": [
+            "title",
+            "subtitle",
+            "summary",
+            "content"
+          ],
+          "properties_options": {
+            "summary": {
+              "hidden": true
+            }
+          },
+          "priority": 20
+        },
+        "medias": {
+          "label": {
+            "en": "Medias",
+            "fr": "Médias"
+          },
+          "properties": [
+            "images",
+            "documents"
+          ],
+          "properties_options": {
+            "images": {
+              "display_options": {
+                "base": {
+                  "background": "transparent",
+                  "alt": true,
+                  "border": true,
+                  "classes": true,
+                  "data-attr": true,
+                  "max-width": 200,
+                  "max-height": 200
+                }
+              }
+            }
+          },
+          "priority": 30
+        },
+        "child-sections": {
+          "type": "widget",
+          "label": {
+            "en": "Sub-Sections",
+            "fr": "Sous-Sections"
+          },
+          "widget_type": "admin.object.list",
+          "widget_options": {
+            "obj_type": "CMS_Section",
+            "list": "default",
+            "list_options": {
+              "filters": {
+                "master": {
+                  "property": "master",
+                  "val": "[[:id]]"
+                }
+              }
+            }
+          },
+          "priority": 200,
+          "conditions": [
+            {
+              "property": "id",
+              "value": 0,
+              "operator": "!="
+            }
+          ]
+        }
+      }
+    }
+  },
+  "default_form": "admin",
+
+  "dashboards": {
+    "admin.list": {
+      "type": "list",
+      "layout": [
+        {
+          "num_columns": 3,
+          "columns": [ 1, 2 ]
+        },
+        {
+          "num_columns": 1,
+          "columns": [ 1 ]
+        }
+      ],
+      "widgets": [
+        "list.tree",
+        "list",
+        "list_actions"
+      ],
+      "widgets_options": {
+        "list": {
+          "display_label": false
+        },
+        "list.tree": {
+          "display_label": false
+        },
+        "list_actions": {
+          "display_label": false
+        }
+      }
+    },
+    "admin.edit": {
+      "type": "object",
+      "layout": [
+        {
+          "num_columns": 3,
+          "columns": [ 1, 2 ]
+        }
+      ],
+      "widgets": [
+        "list.tree",
+        "core.form"
+      ],
+      "widgets_options": {
+        "list.tree": {
+          "display_label": false
+        },
+        "core.form": {
+          "widget_type": "object",
+          "display_label": false
+        }
+      }
+    },
+    "admin.create": {
+      "type": "object",
+      "layout": [
+        {
+          "num_columns": 3,
+          "columns": [ 1, 2 ]
+        }
+      ],
+      "widgets": [
+        "list.tree"
+      ],
+      "widgets_options": {
+        "list.tree": {
+          "display_label": false
+        },
+        "core.form": {
+          "widget_type": "object",
+          "display_label": false
+        }
+      }
+    }
+  },
+
+  "dashboard_list": "admin.list",
+  "dashboard_edit": "admin.edit",
+  "dashboard_create": "admin.create",
+
+  "widgets": {
+    "list.tree": {
+      "type": "admin.object.tree",
+      "label": {
+        "fr": "Arborescence",
+        "en": "Ordered Tree"
+      }
+    }
+  },
+
+  "patterns": {
+    "default": "[[title]]",
+    "link": "<a href=\"[[:url]]\">[[title]]</a>",
+    "link_subtitle": "<a href=\"[[:url]]\">[[title]]</a><br />[[subtitle]]"
+  },
+  "default_pattern": "default",
+
+  "url_options": {
+    "rewrite_pattern": {
+      "fr": "fr/[[:id]]/[[title:url]]",
+      "en": "en/[[:id]]/[[title:url]]"
+    },
+    "patterns": {
+      "default": {
+        "rewrite": "[[:lang]]/[[:id]]/[[title:url]]",
+        "query": "lang=[[:lang]]&section_id=[[:id]]&slug=[[title:url]]",
+        "_rewrite": "[[:lang]]/[[:ident]]",
+        "_query": "lang=[[:lang]]&section_id=[[:ident]]"
+      }
+    },
+    "default_pattern": "default"
+  }
+}
