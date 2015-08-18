@@ -27,6 +27,8 @@ use \CMS\Trait_Content_Metadata_OpenGraph     as Trait_Metadata_OpenGraph;
  * $cfg = Pg_Config::get_latest();
  * ```
  *
+ * Replaces Legacy's {@link //github.com/locomotivemtl/charcoal-legacy/blob/master/modules/cms/code/cms.config.php `CMS_Config`}.
+ *
  * @package CMS\Objects
  */
 class CMS_Config extends Charcoal_Object implements
@@ -84,7 +86,14 @@ class CMS_Config extends Charcoal_Object implements
 		static $_cached;
 
 		if ( ! $_cached instanceof self ) {
-			$_cached = Charcoal::obj( get_called_class() )->load_latest();
+			if ( isset( Charcoal::$config['default_project_config'] ) && class_exists( Charcoal::$config['default_project_config'] ) ) {
+				$default_config_class = Charcoal::$config['default_project_config'];
+			}
+			else {
+				$default_config_class = get_called_class();
+			}
+
+			$_cached = Charcoal::obj( $default_config_class )->load_latest();
 		}
 
 		return $_cached;

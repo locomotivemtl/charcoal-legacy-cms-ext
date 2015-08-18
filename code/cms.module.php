@@ -16,6 +16,8 @@
  *
  * The CMS module's front-end controller.
  *
+ * Replaces Legacy's {@link //github.com/locomotivemtl/charcoal-legacy/blob/master/modules/cms/code/cms.module.php `CMS_Module`}.
+ *
  * @package CMS\Modules
  */
 class CMS_Module extends Charcoal_Module
