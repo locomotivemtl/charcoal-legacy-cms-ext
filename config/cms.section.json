@@ -28,22 +28,6 @@
         "fr": "Laisser vide pour générer automatiquement à partir du titre."
       }
     },
-    "slug": {
-      "type": "string",
-      "l10n": true,
-      "label": {
-        "en": "URI Identifier",
-        "fr": "Identifiant d'URI"
-      },
-      "description": {
-        "en": "<p>The Identifier has a dual-purpose: </p><ol><li>Used instead of the ID (an integer) as an easy keyword to load a specific Section in code;</li><li>Used as a URL-friendly version of the Section's title.</li></ol>",
-        "fr": "<p>L'identifiant sert un double usage</p><ol><li>Utilisé à la place de l'ID (numérique) comme un mot-clé facile pour récupérer une Section spécifique dans le code;</li><li>Utilisé comme une version conviviale pour un URL du titre de la section.</li></ol>"
-      },
-      "notes": {
-        "en": "Leave blank to auto-generate from title.",
-        "fr": "Laisser vide pour générer automatiquement à partir du titre."
-      }
-    },
     "external_url": {
       "type": "string",
       "l10n": true,
@@ -522,8 +506,8 @@
       "default": {
         "rewrite": "[[:lang]]/[[:id]]/[[title:url]]",
         "query": "lang=[[:lang]]&section_id=[[:id]]&slug=[[title:url]]",
-        "_rewrite": "[[:lang]]/[[:ident]]",
-        "_query": "lang=[[:lang]]&section_id=[[:ident]]"
+        "_rewrite": "[[:lang]]/[[:slug]]",
+        "_query": "lang=[[:lang]]&section_id=[[:slug]]"
       }
     },
     "default_pattern": "default"

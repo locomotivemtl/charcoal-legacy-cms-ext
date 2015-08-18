@@ -13,6 +13,7 @@
 
 use \Charcoal as Charcoal;
 
+use \CMS\Trait_Url_Slug                       as Trait_Url_Slug;
 use \CMS\Interface_Content_Metadata_Basic     as Interface_Metadata_Basic;
 use \CMS\Interface_Content_Metadata_OpenGraph as Interface_Metadata_OpenGraph;
 use \CMS\Trait_Content_Metadata_Basic         as Trait_Metadata_Basic;
@@ -45,6 +46,12 @@ use \CMS\Trait_Content_Metadata_OpenGraph     as Trait_Metadata_OpenGraph;
  *
  * - $id
  * - $active
+ *
+ * #### Trait_URL_Slug
+ *
+ * Charcoal Properties:
+ *
+ * - $slug
  *
  * #### Trait_Hierarchy
  *
@@ -84,6 +91,7 @@ class CMS_Section extends Charcoal_Object implements
 		Charcoal\Trait_Category_Item,
 		Charcoal\Trait_Hierarchy,
 		Charcoal\Trait_Url,
+		Trait_Url_Slug,
 		Trait_Metadata_Basic,
 		Trait_Metadata_OpenGraph;
 
@@ -94,7 +102,7 @@ class CMS_Section extends Charcoal_Object implements
 	 * ...
 	 *
 	 * @var string
-	 * @see Property_String (l10n)
+	 * @see Property_String
 	 */
 	public $ident;
 
@@ -260,13 +268,14 @@ class CMS_Section extends Charcoal_Object implements
 	}
 
 	/**
-	 * Compute the unique "ident" and "slug" properties
+	 * Compute the unique "ident" property
 	 *
 	 * The $ident property will be generated from the $title if no value is provided.
-	 * Same applies for the $slug property.
 	 *
 	 * @used-by $this::pre_save()
 	 * @used-by $this::pre_update()
+	 *
+	 * @see CMS_Trait_Url_Slug::filter_unique_slug()
 	 *
 	 * @param string $context Either 'update' or (by default) 'save'.
 	 */
@@ -286,31 +295,6 @@ class CMS_Section extends Charcoal_Object implements
 		if ( ! $old || ( ( $old instanceof Charcoal_Object ) && ( $old->ident !== $this->ident ) ) ) {
 			$this->ident = generate_unique_object_ident($this);
 		}
-
-		if ( ! $this->p('slug')->l10n() ) {
-			$this->slug = [ $this->lang() => $this->slug ];
-		}
-
-		foreach ( $this->slug as $lang => &$slug ) {
-			if (
-				! $old ||
-				empty( $slug ) ||
-				(
-					( $old instanceof Charcoal_Object ) &&
-					( ( $old->p('slug')->text([ 'lang'=> $lang ]) ) !== $slug )
-				)
-			) {
-				$slug = generate_unique_object_ident( $this, $slug, [
-					'lang'   => $lang,
-					'target' => 'slug',
-					'parent' => 'master'
-				] );
-			}
-		}
-
-		if ( ! $this->p('slug')->l10n() ) {
-			$this->slug = reset($this->slug);
-		}
 	}
 
 
@@ -324,6 +308,7 @@ class CMS_Section extends Charcoal_Object implements
 	protected function pre_save( $properties = null )
 	{
 		$this->filter_unique_ident('save');
+		$this->filter_unique_slug('save');
 
 		return parent::pre_save($properties);
 	}
@@ -334,6 +319,7 @@ class CMS_Section extends Charcoal_Object implements
 	protected function pre_update()
 	{
 		$this->filter_unique_ident('update');
+		$this->filter_unique_slug('update');
 
 		return parent::pre_update();
 	}
