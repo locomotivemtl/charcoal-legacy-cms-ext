@@ -1,116 +1,140 @@
 {
-	"config_type": "object",
-	"config_version": 1,
+  "config_type": "object",
+  "config_version": 1,
 
-	"module": "cms",
+  "module": "cms",
 
-	"name": {
-		"en": "Site Configuration",
-		"fr": "Configuration de site"
-	},
+  "name": {
+    "en": "Site Configuration",
+    "fr": "Configuration de site"
+  },
 
-	"revision": true,
+  "revision": true,
 
-	"properties": {
-		"google_analytics": {
-			"type": "string",
-			"label": {
-				"en": "Google Analytics Tracking ID",
-				"fr": "ID de suivi de Google Analytics"
-			},
-			"notes": {
-				"fr": "Ex: UA-XXXXXX-X",
-				"en": "Ex: UA-XXXXXX-X"
-			}
-		},
-		"default_section": {
-			"type": "object",
-			"obj_type": "CMS_Section",
-			"label": {
-				"en": "Default Front-Page",
-				"fr": "Première page par défaut"
-			},
-			"description": {
-				"en": "Default section is loaded when the default URL (without any section) is reached, or usually when the logo is clicked. Typically, this should be a \"Home\" section.",
-				"fr": "La section par défaut est chargée lorsqu'un utilisateur atteint l'URL par défaut (sans paramètre de section). Est également, à l'habitude, la section qui est chargée lorsque le logo est cliqué. Typiquement, ce devrait être une section \"Accueil\"."
-			},
-			"input_type": "tree_select",
-			"input_options": {
-				"tree_select": {
-					"tree_property": "master",
-					"order_property": "position"
-				}
-			}
-		},
-		"default_lang": {
-			"type": "lang",
-			"label": {
-				"en": "Default Language",
-				"fr": "Langage par défaut"
-			}
-		}
-	},
+  "properties": {
+    "google_analytics": {
+      "type": "string",
+      "label": {
+        "en": "Google Analytics Tracking ID",
+        "fr": "ID de suivi de Google Analytics"
+      },
+      "notes": {
+        "fr": "Ex: UA-XXXXXX-X",
+        "en": "Ex: UA-XXXXXX-X"
+      }
+    },
+    "default_section": {
+      "type": "object",
+      "obj_type": "CMS_Section",
+      "label": {
+        "en": "Default Front-Page",
+        "fr": "Première page par défaut"
+      },
+      "description": {
+        "en": "Default section is loaded when the default URL (without any section) is reached, or usually when the logo is clicked. Typically, this should be a \"Home\" section.",
+        "fr": "La section par défaut est chargée lorsqu'un utilisateur atteint l'URL par défaut (sans paramètre de section). Est également, à l'habitude, la section qui est chargée lorsque le logo est cliqué. Typiquement, ce devrait être une section \"Accueil\"."
+      },
+      "input_type": "tree_select",
+      "input_options": {
+        "tree_select": {
+          "tree_property": "master",
+          "order_property": "position"
+        }
+      }
+    },
+    "default_lang": {
+      "type": "lang",
+      "label": {
+        "en": "Default Language",
+        "fr": "Langage par défaut"
+      }
+    },
+    "meta_title": {
+      "label": {
+        "en": "Site Title",
+        "fr": "Titre du site"
+      }
+    },
+    "meta_description": {
+      "label": {
+        "en": "Site Description",
+        "fr": "Description du site"
+      }
+    },
+    "meta_keywords": {
+      "label": {
+        "en": "Site keywords",
+        "fr": "Mots-clés du site"
+      }
+    },
+    "meta_type": {
+      "label": {
+        "en": "Default Content Type",
+        "fr": "Type de contenu par défaut"
+      }
+    }
+  },
 
-	"data": {},
+  "data": {},
 
-	"sources": {
-		"default": {
-			"table": "cms_config"
-		}
-	},
-	"default_source" : "default",
+  "sources": {
+    "default": {
+      "table": "cms_config"
+    }
+  },
+  "default_source" : "default",
 
-	"lists": {
-		"admin": {
-			"label": {
-				"en":"List of Global Settings",
-				"fr":"Liste des paramètres globaux"
-			},
-			"properties": [
-				"id",
-				"meta_title",
-				"default_lang",
-				"default_section",
-				"google_analytics"
-			],
-			"orders": {
-				"position": {
-					"property": "position",
-					"mode": "asc"
-				}
-			}
-		}
-	},
-	"default_list": "admin",
+  "lists": {
+    "admin": {
+      "label": {
+        "en":"List of Global Settings",
+        "fr":"Liste des paramètres globaux"
+      },
+      "properties": [
+        "id",
+        "meta_title",
+        "default_lang",
+        "default_section",
+        "google_analytics"
+      ],
+      "orders": {
+        "position": {
+          "property": "position",
+          "mode": "asc"
+        }
+      }
+    }
+  },
+  "default_list": "admin",
 
-	"forms": {
-		"admin": {
-			"label": {
-				"en": "Site Configuration",
-				"fr": "Configuration de site"
-			},
-			"groups": {
-				"analytics": {
-					"label": {
-						"en": "Analytics",
-						"fr": "Outils d'analyse"
-					},
-					"properties": [
-						"google_analytics"
-					]
-				},
-				"content": {
-					"label": {
-						"en": "Default Content Settings",
-						"fr": "Configuration de contenu par défaut"
-					},
-					"properties": [
-						"default_lang",
-						"default_section"
-					]
-				}
-			}
-		}
-	},
-	"default_form": "admin"
+  "forms": {
+    "admin": {
+      "label": {
+        "en": "Site Configuration",
+        "fr": "Configuration de site"
+      },
+      "groups": {
+        "analytics": {
+          "label": {
+            "en": "Analytics",
+            "fr": "Outils d'analyse"
+          },
+          "properties": [
+            "google_analytics"
+          ]
+        },
+        "content": {
+          "label": {
+            "en": "Default Content Settings",
+            "fr": "Configuration de contenu par défaut"
+          },
+          "properties": [
+            "default_lang",
+            "default_section"
+          ]
+        }
+      }
+    }
+  },
+  "default_form": "admin"
 }

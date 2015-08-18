@@ -1,61 +1,61 @@
 {
-	"properties": {
-		"social_web": {
-			"type": "json",
-			"label": {
-				"en": "Social Networking Services",
-				"fr": "Services de réseautage social"
-			},
-			"input_type": "form",
-			"fields_accepted": "available",
-			"fields_available": {
-				"facebook": {
-					"type": "url",
-					"label": "Facebook"
-				},
-				"twitter": {
-					"type": "url",
-					"label": "Twitter"
-				},
-				"google": {
-					"type": "url",
-					"label": "Google+"
-				},
-				"linkedin": {
-					"type": "url",
-					"label": "LinkedIn"
-				},
-				"instagram": {
-					"type": "url",
-					"label": "Instagram"
-				},
-				"flickr": {
-					"type": "url",
-					"label": "Flickr"
-				},
-				"youtube": {
-					"type": "url",
-					"label": "YouTube"
-				}
-			}
-		}
-	},
+  "properties": {
+    "social_web": {
+      "type": "json",
+      "label": {
+        "en": "Social Networking Services",
+        "fr": "Services de réseautage social"
+      },
+      "input_type": "form",
+      "fields_accepted": "available",
+      "fields_available": {
+        "facebook": {
+          "type": "url",
+          "label": "Facebook"
+        },
+        "twitter": {
+          "type": "url",
+          "label": "Twitter"
+        },
+        "google": {
+          "type": "url",
+          "label": "Google+"
+        },
+        "linkedin": {
+          "type": "url",
+          "label": "LinkedIn"
+        },
+        "instagram": {
+          "type": "url",
+          "label": "Instagram"
+        },
+        "flickr": {
+          "type": "url",
+          "label": "Flickr"
+        },
+        "youtube": {
+          "type": "url",
+          "label": "YouTube"
+        }
+      }
+    }
+  },
 
-	"forms": {
-		"admin": {
-			"groups": {
-				"meta-social": {
-					"label": {
-						"en": "Social Networking Services",
-						"fr": "Services de réseautage social"
-					},
-					"properties": [
-						"social_web"
-					],
-					"priority": 200
-				}
-			}
-		}
-	},
-	"default_form": "admin"
+  "forms": {
+    "admin": {
+      "groups": {
+        "meta-social": {
+          "label": {
+            "en": "Social Networking Services",
+            "fr": "Services de réseautage social"
+          },
+          "properties": [
+            "social_web"
+          ],
+          "priority": 200
+        }
+      }
+    }
+  },
+  "default_form": "admin"
 }
