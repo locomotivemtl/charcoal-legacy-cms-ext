@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File: Charcoal Trait Social Web Links
+ * File: Social Web Links Trait
  *
  * @copyright   2015 Locomotive
  * @license     LGPL <https://www.gnu.org/licenses/lgpl.html>
@@ -13,7 +13,7 @@
 namespace CMS;
 
 /**
- * Class: Charcoal Trait Social Web Links
+ * Trait: Social Web Links
  *
  * @package CMS\Objects
  */

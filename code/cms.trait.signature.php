@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File: Agency Signature
+ * File: Agency Signature Trait
  *
  * @copyright  2015 Locomotive
  * @license    PROPRIETARY
