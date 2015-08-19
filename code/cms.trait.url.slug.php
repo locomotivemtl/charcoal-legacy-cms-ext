@@ -12,6 +12,8 @@
 
 namespace CMS;
 
+use \Charcoal as Charcoal;
+
 /**
  * Trait: CMS URL Slug
  *
@@ -46,6 +48,15 @@ trait Trait_Url_Slug
 			$context = 'save';
 		}
 
+		// Since Charcoal doesn't provide a copy of the previous data,
+		// import the existing data and do some comparisons.
+		if ( 'update' === $context ) {
+			$old = Charcoal::obj( get_class($this) )->load( $this->id() );
+		}
+		else {
+			$old = false;
+		}
+
 		if ( ! $this->p('slug')->l10n() ) {
 			$this->slug = [ $this->lang() => $this->slug ];
 		}
@@ -59,11 +70,7 @@ trait Trait_Url_Slug
 					( ( $old->p('slug')->text([ 'lang'=> $lang ]) ) !== $slug )
 				)
 			) {
-				$slug = generate_unique_object_ident( $this, $slug, [
-					'lang'   => $lang,
-					'target' => 'slug',
-					'parent' => 'master'
-				] );
+				$slug = generate_unique_object_ident( $this->p('slug'), $slug, [ 'lang' => $lang ] );
 			}
 		}
 

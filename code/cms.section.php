@@ -144,7 +144,7 @@ class CMS_Section extends Charcoal_Object implements
 	 * @var string[]
 	 * @see Property_Object
 	 */
-	public $categories;
+	public $category;
 
 	/**
 	 * ...
@@ -285,6 +285,8 @@ class CMS_Section extends Charcoal_Object implements
 			$context = 'save';
 		}
 
+		// Since Charcoal doesn't provide a copy of the previous data,
+		// import the existing data and do some comparisons.
 		if ( 'update' === $context ) {
 			$old = Charcoal::obj( get_class($this) )->load( $this->id() );
 		}
@@ -293,7 +295,7 @@ class CMS_Section extends Charcoal_Object implements
 		}
 
 		if ( ! $old || ( ( $old instanceof Charcoal_Object ) && ( $old->ident !== $this->ident ) ) ) {
-			$this->ident = generate_unique_object_ident($this);
+			$this->ident = generate_unique_object_ident( $this->p('ident') );
 		}
 	}
 

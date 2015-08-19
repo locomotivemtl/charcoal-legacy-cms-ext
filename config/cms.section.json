@@ -28,6 +28,12 @@
         "fr": "Laisser vide pour générer automatiquement à partir du titre."
       }
     },
+    "slug": {
+      "unique_options": {
+        "generate_from": "title",
+        "parent": "master"
+      }
+    },
     "external_url": {
       "type": "string",
       "l10n": true,
@@ -90,12 +96,6 @@
             "en": "External Link",
             "fr": "Lien externe"
           }
-        },
-        "home": {
-          "label": {
-            "en": "Home",
-            "fr": "Accueil"
-          }
         }
       }
     },
@@ -121,9 +121,6 @@
       }
     },
     "category": {
-      "active": false
-    },
-    "categories": {
       "type": "object",
       "input_type": "checkbox",
       "obj_type": "CMS_Section_Category",
@@ -270,7 +267,7 @@
             "section_type",
             "master",
             "ident",
-            "categories",
+            "category",
             "active"
           ],
           "properties_options": {
@@ -280,7 +277,7 @@
             "active": {
               "hidden": true
             },
-            "categories": {
+            "category": {
               "hidden": true
             },
             "section_type": {
@@ -288,21 +285,6 @@
             }
           },
           "priority": 10
-        },
-        "url": {
-          "label": {
-            "en": "URL Information",
-            "fr": "Information d'URL"
-          },
-          "l10n": true,
-          "l10n_options": {
-            "mode": "loop_group"
-          },
-          "properties": [
-            "slug",
-            "external_url"
-          ],
-          "priority": 12
         },
         "template": {
           "label": {
@@ -367,6 +349,21 @@
             }
           },
           "priority": 30
+        },
+        "url": {
+          "label": {
+            "en": "URL Information",
+            "fr": "Information d'URL"
+          },
+          "l10n": true,
+          "l10n_options": {
+            "mode": "loop_group"
+          },
+          "properties": [
+            "slug",
+            "external_url"
+          ],
+          "priority": 40
         },
         "child-sections": {
           "type": "widget",
