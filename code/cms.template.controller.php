@@ -20,6 +20,9 @@
  */
 class CMS_Template_Controller extends Charcoal_Template_Controller
 {
+	use Boilerplate_Trait_Content_Metadata,
+		CMS\Trait_HTML_Classes;
+
 	/**
 	 * Keep a copy of the current section
 	 *
@@ -63,6 +66,32 @@ class CMS_Template_Controller extends Charcoal_Template_Controller
 	public function module()
 	{
 		return 'cms';
+	}
+
+	/**
+	 * Get the current object relative to the context
+	 *
+	 * This method is meant to be reimplemented in a child template controller
+	 * to return the resolved object that the module considers "the context".
+	 *
+	 * @return Charcoal_Object Chainable
+	 */
+	public function context()
+	{
+		return $this->section();
+	}
+
+	/**
+	 * Get the current object's type relative to the context
+	 *
+	 * This method is meant to be reimplemented in a child template controller
+	 * to return the resolved object that the module considers "the context".
+	 *
+	 * @return string
+	 */
+	public function context_type()
+	{
+		return $this->context()->obj_type();
 	}
 
 	/**
@@ -271,4 +300,93 @@ class CMS_Template_Controller extends Charcoal_Template_Controller
 
 		return $token;
 	}
+
+	/**
+	 * Output additional data in the `<head>` of the HTML document.
+	 *
+	 * This method is meant to be reimplemented in a child template controller.
+	 *
+	 * @see cms/assets/templates/cms.inc.head.php
+	 *
+	 * @param string|string[] $output Optional. Additional data to output in the `<head>` element.
+	 * @param bool            $after  Optional. Wether to output the extra data before or after default data.
+	 *
+	 * @return Closure {
+	 *     Returns a Closure that can alter the default JS operations..
+	 *
+	 *     @type string                $text   The contents of the `<head>` element from the template.
+	 *     @type Mustache_LambdaHelper $lambda An instance of the Mustache LambdaHelper object.
+	 *
+	 *     @uses string|string[]       $output Optional. Additional data to output in the `<head>` element.
+	 *     @uses bool                  $after  Optional. Wether to output the extra data before or after default data.
+	 *
+	 *     @return string
+	 * }
+	 */
+	public function filter_document_head( $output = '', $after = true )
+	{
+		return function ( $text, Mustache_LambdaHelper $lambda ) use ( $output, $after ) {
+			if ( is_array( $output ) ) {
+				# $text = explode("\n", preg_replace('#^\t+#m', '', $text));
+				$output = implode("\n\t\t", $output);
+			}
+
+			return $lambda->render( $after ? $text . $output : $output . $text );
+		};
+	}
+
+	/**
+	 * Output additional data before the closing `</body>` tag of the HTML document.
+	 *
+	 * @see cms/assets/templates/cms.inc.foot.php
+	 *
+	 * @param string|string[] $output Optional. Additional data to output before the closing `</body>` element.
+	 * @param bool            $after  Optional. Wether to output the extra data before or after default data.
+	 *
+	 * @return Closure {
+	 *     Returns a Closure that can alter the default JS operations..
+	 *
+	 *     @type string                $text   The contents of the `<head>` element from the template.
+	 *     @type Mustache_LambdaHelper $lambda An instance of the Mustache LambdaHelper object.
+	 *
+	 *     @uses string|string[]       $output Optional. Additional data to output before the closing `</body>` element.
+	 *     @uses bool                  $after  Optional. Wether to output the extra data before or after default data.
+	 *
+	 *     @return string
+	 * }
+	 */
+	public function filter_document_foot( $output = '', $after = false )
+	{
+		return function ( $text, Mustache_LambdaHelper $lambda ) use ( $output, $after ) {
+			if ( is_array( $output ) ) {
+				# $text = explode("\n", preg_replace('#^\t+#m', '', $text));
+				$output = implode("\n\t\t", $output);
+			}
+
+			return $lambda->render( $after ? $text . $output : $output . $text );
+		};
+	}
+
+	/**
+	 * Filter the output of the default Google Analytics tracking statements.
+	 *
+	 * This method is meant to be reimplemented in a child template controller
+	 * to either render additional JS operations or alter the default ones.
+	 *
+	 * @return Closure {
+	 *     Returns a Closure that can alter the default JS operations..
+	 *
+	 *     @type string                $text   The default `ga()` calls.
+	 *     @type Mustache_LambdaHelper $lambda An instance of the Mustache LambdaHelper object.
+	 *
+	 *     @return string
+	 * }
+	 */
+	public function filter_google_analytics()
+	{
+		return function ( $text, Mustache_LambdaHelper $lambda ) {
+			return $lambda->render($text);
+		};
+	}
+
 }
