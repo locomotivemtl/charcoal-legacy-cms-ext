@@ -62,12 +62,28 @@ class CMS_Config extends Charcoal_Object implements
     public $default_lang;
 
     /**
+     * Default Primary Color
+     *
+     * @var string
+     * @see Property_Color
+     */
+    public $default_color;
+
+    /**
      * Google Analytics Tracking ID
      *
      * @var string
      * @see Property_String
      */
     public $google_analytics;
+
+    /**
+     * TypeKit Kit ID
+     *
+     * @var string
+     * @see Property_String
+     */
+    public $typekit;
 
 	/**
 	 * The storage key.

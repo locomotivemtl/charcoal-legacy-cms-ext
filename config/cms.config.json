@@ -23,6 +23,17 @@
         "en": "Ex: UA-XXXXXX-X"
       }
     },
+    "typekit": {
+      "type": "string",
+      "label": {
+        "en": "TypeKit Kit ID",
+        "fr": "ID de trousse de TypeKit"
+      },
+      "notes": {
+        "fr": "XYZ de \"use.typekit.net/XYZ.js\"",
+        "en": "XYZ from \"use.typekit.net/XYZ.js\""
+      }
+    },
     "default_section": {
       "type": "object",
       "obj_type": "CMS_Section",
@@ -47,6 +58,17 @@
       "label": {
         "en": "Default Language",
         "fr": "Langage par défaut"
+      }
+    },
+    "default_color": {
+      "type": "color",
+      "label": {
+        "en": "Primary Color",
+        "fr": "Couleur Primaire"
+      },
+      "notes": {
+        "en": "In Hexadecimal Format",
+        "fr": "En format hexadécimal"
       }
     },
     "meta_title": {
@@ -93,6 +115,7 @@
       "properties": [
         "id",
         "meta_title",
+        "default_color",
         "default_lang",
         "default_section",
         "google_analytics"
@@ -114,13 +137,14 @@
         "fr": "Configuration de site"
       },
       "groups": {
-        "analytics": {
+        "apis": {
           "label": {
-            "en": "Analytics",
-            "fr": "Outils d'analyse"
+            "en": "APIs",
+            "fr": "APIs"
           },
           "properties": [
-            "google_analytics"
+            "google_analytics",
+            "typekit"
           ]
         },
         "content": {
@@ -130,6 +154,7 @@
           },
           "properties": [
             "default_lang",
+            "default_color",
             "default_section"
           ]
         }
