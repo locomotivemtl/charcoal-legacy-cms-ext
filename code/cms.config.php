@@ -13,10 +13,10 @@
  * @since      Version 2015-08-10
  */
 
-use \CMS\Interface_Content_Metadata_Basic     as Interface_Metadata_Basic;
 use \CMS\Interface_Content_Metadata_OpenGraph as Interface_Metadata_OpenGraph;
-use \CMS\Trait_Content_Metadata_Basic         as Trait_Metadata_Basic;
+use \CMS\Interface_Content_Metadata_Basic     as Interface_Metadata_Basic;
 use \CMS\Trait_Content_Metadata_OpenGraph     as Trait_Metadata_OpenGraph;
+use \CMS\Trait_Content_Metadata_Basic         as Trait_Metadata_Basic;
 
 /**
  * Class: CMS Site Configuration

@@ -14,10 +14,10 @@
 use \Charcoal as Charcoal;
 
 use \CMS\Trait_Url_Slug                       as Trait_Url_Slug;
-use \CMS\Interface_Content_Metadata_Basic     as Interface_Metadata_Basic;
 use \CMS\Interface_Content_Metadata_OpenGraph as Interface_Metadata_OpenGraph;
-use \CMS\Trait_Content_Metadata_Basic         as Trait_Metadata_Basic;
 use \CMS\Trait_Content_Metadata_OpenGraph     as Trait_Metadata_OpenGraph;
+use \CMS\Interface_Content_Metadata_Basic     as Interface_Metadata_Basic;
+use \CMS\Trait_Content_Metadata_Basic         as Trait_Metadata_Basic;
 
 /**
  * Class: CMS Section
@@ -330,19 +330,6 @@ class CMS_Section extends Charcoal_Object implements
 
 // Methods: CMS\Trait_Content_Metadata_* (charcoal-legacy-cms-meta)
 // ==========================================================================
-
-	/**
-	 * Retrieve the document's title, for the `<title>` element.
-	 *
-	 * @see Interface_Metadata_Basic
-	 *
-	 * @return string
-	 */
-
-	public function document_title()
-	{
-		return $this->meta_title();
-	}
 
 	/**
 	 * Retrieve the object's title—as it should appear
