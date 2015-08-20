@@ -34,6 +34,9 @@
         "parent": "master"
       }
     },
+    "master": {
+      "obj_type": "CMS_Section"
+    },
     "external_url": {
       "type": "string",
       "l10n": true,
@@ -174,6 +177,28 @@
       "label": {
         "en": "Image(s)",
         "fr": "Image(s)"
+      },
+      "notes": {
+        "en": "Intermediate sizes are generated from this image.",
+        "fr": "Des tailles intermédiaires sont générés à partir de cette image."
+      },
+      "fallback_properties": [
+        "thumbnails"
+      ],
+      "generated_properties":[
+        "images"
+      ],
+      "auto_resize": false,
+      "resize_mode": "orig",
+      "display_options": {
+        "base": {
+          "alt": false,
+          "border": false,
+          "classes": false,
+          "data-attr": false,
+          "max-width": 0,
+          "max-height": 0
+        }
       },
       "upload_path": "uploads/cms_sections/images/src/"
     },
