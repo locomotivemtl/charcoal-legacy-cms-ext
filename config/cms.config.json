@@ -109,8 +109,8 @@
   "lists": {
     "admin": {
       "label": {
-        "en":"List of Global Settings",
-        "fr":"Liste des paramètres globaux"
+        "en": "List of Global Settings",
+        "fr": "Liste des paramètres globaux"
       },
       "properties": [
         "id",

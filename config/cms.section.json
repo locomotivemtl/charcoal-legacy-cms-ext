@@ -185,7 +185,7 @@
       "fallback_properties": [
         "thumbnails"
       ],
-      "generated_properties":[
+      "generated_properties": [
         "images"
       ],
       "auto_resize": false,
@@ -209,22 +209,22 @@
         "en": "Thumbnail(s)",
         "fr": "Vignette(s)"
       },
-      "notes":{
-        "en":"Small image used in page templates, lightboxes, and modals.",
-        "fr":"Petite image utilisée dans les gabarits de page et fenêtres modaux."
+      "notes": {
+        "en": "Small image used in page templates, lightboxes, and modals.",
+        "fr": "Petite image utilisée dans les gabarits de page et fenêtres modaux."
       },
-      "fallback_properties":[
+      "fallback_properties": [
         "images"
       ],
-      "strip":true,
-      "display_options":{
-        "base":{
-          "alt":false,
-          "border":false,
-          "classes":false,
-          "data-attr":false,
-          "max-width":0,
-          "max-height":0
+      "strip": true,
+      "display_options": {
+        "base": {
+          "alt": false,
+          "border": false,
+          "classes": false,
+          "data-attr": false,
+          "max-width": 0,
+          "max-height": 0
         }
       },
       "upload_path": "uploads/cms_sections/images/thumb/"
