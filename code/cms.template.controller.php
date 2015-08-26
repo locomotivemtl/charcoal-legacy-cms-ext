@@ -247,7 +247,7 @@ class CMS_Template_Controller extends Charcoal_Template_Controller
 	 *     of Charcoal\Asset with the desired $file.
 	 *
 	 *     @type string                $file   The base file name and extension to lookup.
-	 *     @type Mustache_LambdaHelper $lambda Unused.
+	 *     @type Mustache_LambdaHelper $lambda An instance of the Mustache LambdaHelper object.
 	 *
 	 *     @return Charcoal\Asset|string Returns a value based on $asset_mode or FALSE if it doesn't exist.
 	 * }
@@ -255,20 +255,20 @@ class CMS_Template_Controller extends Charcoal_Template_Controller
 	public function assets( $asset_mode = 'url' )
 	{
 		$lambdas = [
-			'images' => function ( $file ) use ( $asset_mode ) {
-				return new Charcoal\Asset('images', $file, $asset_mode);
+			'images'  => function ( $file, Mustache_LambdaHelper $lambda ) use ( $asset_mode ) {
+				return new Charcoal\Asset('images', $lambda->render($file), $asset_mode);
 			},
-			'styles' => function ( $file ) use ( $asset_mode ) {
-				return new Charcoal\Asset('styles', $file, $asset_mode);
+			'styles'  => function ( $file, Mustache_LambdaHelper $lambda ) use ( $asset_mode ) {
+				return new Charcoal\Asset('styles', $lambda->render($file), $asset_mode);
 			},
-			'scripts' => function ( $file ) use ( $asset_mode ) {
-				return new Charcoal\Asset('scripts', $file, $asset_mode);
+			'scripts' => function ( $file, Mustache_LambdaHelper $lambda ) use ( $asset_mode ) {
+				return new Charcoal\Asset('scripts', $lambda->render($file), $asset_mode);
 			},
-			'fonts' => function ( $file ) use ( $asset_mode ) {
-				return new Charcoal\Asset('fonts', $file, $asset_mode);
+			'fonts'   => function ( $file, Mustache_LambdaHelper $lambda ) use ( $asset_mode ) {
+				return new Charcoal\Asset('fonts', $lambda->render($file), $asset_mode);
 			},
-			'files' => function ( $file ) use ( $asset_mode ) {
-				return new Charcoal\Asset('files', $file, $asset_mode);
+			'files'   => function ( $file, Mustache_LambdaHelper $lambda ) use ( $asset_mode ) {
+				return new Charcoal\Asset('files', $lambda->render($file), $asset_mode);
 			}
 		];
 
