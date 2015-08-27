@@ -65,6 +65,8 @@ trait Trait_Url_Slug
 			if (
 				! $old ||
 				empty( $slug ) ||
+				preg_match( '#[\p{Z}\p{Lu}\p{M}]#u', $slug ) ||
+				false !== strpos( $slug, ' ' ) ||
 				(
 					( $old instanceof Charcoal_Object ) &&
 					( ( $old->p('slug')->text([ 'lang'=> $lang ]) ) !== $slug )
