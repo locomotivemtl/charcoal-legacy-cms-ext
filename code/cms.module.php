@@ -23,6 +23,13 @@
 class CMS_Module extends Charcoal_Module
 {
 	/**
+	 * Determine if the request is the result of an AJAX call.
+	 *
+	 * @var bool
+	 */
+	protected static $_is_ajax_request;
+
+	/**
 	 * Module initialisation
 	 *
 	 * This function should act as both the initialization of the module and the front-page main controller.
@@ -34,7 +41,7 @@ class CMS_Module extends Charcoal_Module
 	 *
 	 * @param mixed[] $options Optional. An associative array of options to influence the front-end.
 	 */
-	static public function init( array $options = [] )
+	public static function init( array $options = [] )
 	{
 		// Make sure a session is started at all time. For tokens, some cache, user data, etc.
 		if ( ! session_id() ) {
@@ -157,5 +164,118 @@ class CMS_Module extends Charcoal_Module
 		}
 
 		setlocale( LC_ALL, $locale );
+	}
+
+	/**
+	 * Determine if the request is the result of an AJAX call.
+	 *
+	 * @param bool $define_const Optional. Defines the IS_AJAX constant, if undefined.
+	 *
+	 * @return bool
+	 */
+	public static function is_ajax_request( $set_const = false )
+	{
+		if ( is_null(self::$_is_ajax_request) ) {
+			$headers  = [ 'HTTP_X_REQUESTED_WITH', 'X_REQUESTED_WITH', 'X-Requested-With' ];
+			$requests = [ 'xmlhttprequest', 'jsonhttprequest' ];
+
+			foreach ( $headers as $header ) {
+				$with = getenv($header);
+
+				if ( $with && is_string($with) ) {
+					$with = strtolower($with);
+
+					if ( in_array( $with, $requests ) ) {
+						$with = (bool) $with;
+						break;
+					}
+				}
+			}
+
+			self::$_is_ajax_request = $with;
+		}
+
+		if ( $set_const && ! defined('IS_AJAX') ) {
+			define( 'IS_AJAX', self::$_is_ajax_request );
+		}
+
+		return self::$_is_ajax_request;
+	}
+
+	/**
+	 * Determine if the request is the result of an AJAX call.
+	 *
+	 * @param mixed ... {
+	 *     Various options to define response sent back to requester.
+	 *
+	 *     @type bool    $success     Determine the success of the request.
+	 *     @type string  $redirect_to A destination to redirect the client to (if this isn't an XHR request).
+	 *     @type bool    $use_session Determine if $data is stored in the user session or appended as a query string.
+	 *     @type mixed[] $data        Data to be sent back to the client.
+	 * }
+	 */
+	public static function resolve_response()
+	{
+		$default_options = [
+			'success'     => true,
+			'redirect_to' => ( getenv('HTTP_REFERER') ?: Charcoal::$config['URL'] ),
+			'use_session' => false,
+			'data'        => []
+		];
+
+		$args  = func_get_args();
+		$first = reset($args);
+
+		if ( 1 === func_num_args() && is_assoc($first) ) {
+			$options = $first;
+		}
+		else {
+			$options = [];
+
+			foreach ( $args as $arg ) {
+				switch ( gettype($arg) ) {
+					case 'boolean':
+						$options['success'] = $arg;
+						break;
+
+					case 'string':
+						$options['redirect_to'] = $arg;
+						break;
+
+					case 'array':
+						$options['data'] = $arg;
+						break;
+				}
+			}
+		}
+
+		$options = parse_config( $default_options, $options );
+
+		if ( ( defined('IS_AJAX') && IS_AJAX ) || self::is_ajax_request() ) {
+
+			if ( $options['success'] ) {
+				JSON::send_success($options['data']);
+			}
+			else {
+				JSON::send_error($options['data']);
+			}
+		}
+		else {
+			if ( false === headers_sent() && $options['redirect_to'] ) {
+				$url = $options['redirect_to'];
+
+				/*if ( $options['use_session'] ) {
+					$_SESSION[ self::$session_response ] = $options['data'];
+				}
+				else*/if ( $options['data'] ) {
+					$url = http_build_url( $options['redirect_to'], [ 'query' => http_build_query($options['data']) ] );
+				}
+
+				header( 'Location: ' . $url );
+				exit;
+			}
+		}
+
+		return false;
 	}
 }
