@@ -521,15 +521,15 @@
 
   "url_options": {
     "rewrite_pattern": {
-      "fr": "fr/[[:id]]/[[slug]]",
-      "en": "en/[[:id]]/[[slug]]"
+      "fr": "fr/[[slug]]",
+      "en": "en/[[slug]]"
     },
     "patterns": {
       "default": {
-        "rewrite": "[[:lang]]/[[:id]]/[[title:url]]",
-        "query": "lang=[[:lang]]&section_id=[[:id]]&slug=[[title:url]]",
-        "_rewrite": "[[:lang]]/[[:slug]]",
-        "_query": "lang=[[:lang]]&section_id=[[:slug]]"
+        "_rewrite": "[[:lang]]/[[:id]]/[[title:url]]",
+        "_query": "lang=[[:lang]]&section_id=[[:id]]&slug=[[title:url]]",
+        "rewrite": "[[:lang]]/[[:slug]]",
+        "query": "lang=[[:lang]]&section_id=[[:slug]]"
       }
     },
     "default_pattern": "default"

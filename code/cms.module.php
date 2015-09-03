@@ -49,9 +49,9 @@ class CMS_Module extends Charcoal_Module
 		}
 
 		// Load the request parameters from $_GET
-		$action     = filter_input(INPUT_GET, 'action', FILTER_SANITIZE_STRING);
-		$section_id = filter_input(INPUT_GET, 's',      FILTER_SANITIZE_STRING);
-		$language   = filter_input(INPUT_GET, 'lang',   FILTER_SANITIZE_STRING);
+		$action     = filter_input(INPUT_GET, 'action',     FILTER_SANITIZE_STRING);
+		$section_id = filter_input(INPUT_GET, 'section_id', FILTER_SANITIZE_STRING);
+		$language   = filter_input(INPUT_GET, 'lang',       FILTER_SANITIZE_STRING);
 
 		// Prepare default request options
 		self::parse_request( $options, $action, $section_id, $language );
@@ -118,9 +118,13 @@ class CMS_Module extends Charcoal_Module
 	protected static function resolve_request( &$action, &$section_id )
 	{
 		if ( $section_id ) {
-			$section_loader = new Charcoal_Object_Loader('CMS_Section');
+			$class = 'CMS_Section';
 
-			$section = $section_loader->{$section_id};
+			$key = self::resolve_loader_key($class, $section_id);
+
+			$section_loader = new Charcoal_Object_Loader($class, $key);
+
+			$section = $section_loader->{ $section_id };
 
 			if ( $section->template ) {
 				// What to do?
@@ -164,6 +168,76 @@ class CMS_Module extends Charcoal_Module
 		}
 
 		setlocale( LC_ALL, $locale );
+
+		_a( 'one-invalid-field', [
+				'en' => 'One field is invalid.',
+				'fr' => 'Un champ est invalide.'
+		] );
+
+		_a( 'many-invalid-fields', [
+				'en' => '%d fields are invalid.',
+				'fr' => '%d champs ne sont pas valides.'
+		] );
+
+		_a( 'describe-invalid-field', [
+				'en' => 'A problem has occurred while processing your submission.',
+				'fr' => 'Un problème est survenu lors de l’enregistrement de votre soumission.'
+		] );
+
+		_a( 'describe-invalid-fields', [
+				'en' => 'Problems occured while processing your submission.',
+				'fr' => 'Des problèmes ont eu lieu lors de l’enregistrement de votre soumission.'
+		] );
+
+		_a( 'unknown-error', [
+				'en' => 'An error occured while processing your submission.',
+				'fr' => 'Une erreur est survenue lors du traitement de votre soumission.'
+		] );
+	}
+
+	/**
+	 * Resolve the provided object key loader
+	 * (whether it uses {@see Trait_Url_Slug}'s property)
+	 *
+	 * @param string|Charcoal_Object $obj
+	 * @param string|int             $ident    A value to match against.
+	 * @param string|null            $fallback Optional.
+	 *
+	 * @return string|null
+	 */
+	public static function resolve_loader_key( $obj, $ident, $fallback = 'ident' )
+	{
+		if ( is_string($obj) ) {
+			$obj = Charcoal::obj($obj);
+		}
+
+		$prop = $obj->p('slug');
+
+		if ( ! is_numeric($ident) ) {
+			if ( $prop ) {
+				$key = 'slug';
+
+				if ( $prop->l10n() ) {
+					$key .= '_' . _l();
+				}
+
+				return $key;
+			}
+
+			$prop = $obj->p( $fallback );
+
+			if ( $prop ) {
+				$key = $fallback;
+
+				if ( $prop->l10n() ) {
+					$key .= '_' . _l();
+				}
+
+				return $key;
+			}
+		}
+
+		return null;
 	}
 
 	/**

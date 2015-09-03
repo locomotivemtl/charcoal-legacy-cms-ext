@@ -24,9 +24,16 @@ class CMS_Template_Controller extends Charcoal_Template_Controller
 		CMS\Trait_HTML_Classes;
 
 	/**
+	 * Keep a copy of the current context
+	 *
+	 * @var Charcoal_Object
+	 */
+	protected $_context;
+
+	/**
 	 * Keep a copy of the current section
 	 *
-	 * @var Charcoal_Object_Loader
+	 * @var Charcoal_Object
 	 */
 	protected $_section;
 
@@ -69,6 +76,20 @@ class CMS_Template_Controller extends Charcoal_Template_Controller
 	}
 
 	/**
+	 * Set the current context for the template controller
+	 *
+	 * @param Charcoal_Object $context
+	 *
+	 * @return $this
+	 */
+	public function set_context( $context )
+	{
+		$this->_context = $context;
+
+		return $this;
+	}
+
+	/**
 	 * Get the current object relative to the context
 	 *
 	 * This method is meant to be reimplemented in a child template controller
@@ -78,7 +99,11 @@ class CMS_Template_Controller extends Charcoal_Template_Controller
 	 */
 	public function context()
 	{
-		return $this->section();
+		if ( ! $this->_context ) {
+			$this->_context = $this->section();
+		}
+
+		return $this->_context;
 	}
 
 	/**
