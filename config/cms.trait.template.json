@@ -1,0 +1,48 @@
+{
+  "properties": {
+    "template": {
+      "type": "object",
+      "obj_type": "CMS_Template",
+      "required": false,
+      "foreign_key": "ident",
+      "label": {
+        "en": "Template",
+        "fr": "Gabarit"
+      }
+    },
+    "template_options": {
+      "type": "cms_template_options",
+      "input_type": "form",
+      "fields_accepted": "available",
+      "label": {
+        "en": "Template configuration options",
+        "fr": "Options de configuration du gabarit"
+      },
+      "description": {
+        "en": "Every template can have a specific set of configuration options.",
+        "fr": "Chaque gabarit peut avoir ses options de configuration spécifiques."
+      }
+    }
+  },
+
+  "forms": {
+    "admin": {
+      "label": {
+        "en": "Site Section",
+        "fr": "Section de site"
+      },
+      "groups": {
+        "template": {
+          "label": {
+            "en": "Template Information",
+            "fr": "Information de gabarit"
+          },
+          "properties": [
+            "template",
+            "template_options"
+          ]
+        }
+      }
+    }
+  }
+}

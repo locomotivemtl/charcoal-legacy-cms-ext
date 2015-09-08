@@ -60,6 +60,13 @@ use \CMS\Trait_Content_Metadata_Basic         as Trait_Metadata_Basic;
  * - $master
  * - $position
  *
+ * #### CMS_Trait_Template
+ *
+ * Charcoal Properties:
+ *
+ * - $template
+ * - $template_options
+ *
  * #### Trait_Category_item
  *
  * Charcoal Properties:
@@ -91,6 +98,7 @@ class CMS_Section extends Charcoal_Object implements
 		Charcoal\Trait_Category_Item,
 		Charcoal\Trait_Hierarchy,
 		Charcoal\Trait_Url,
+		CMS_Trait_Template,
 		Trait_Url_Slug,
 		Trait_Metadata_Basic,
 		Trait_Metadata_OpenGraph;
@@ -121,22 +129,6 @@ class CMS_Section extends Charcoal_Object implements
 	 * @see Property_Choice
 	 */
 	public $section_type;
-
-	/**
-	 * ...
-	 *
-	 * @var string
-	 * @see Property_Object
-	 */
-	public $template;
-
-	/**
-	 * ...
-	 *
-	 * @var mixed
-	 * @see Property_JSON
-	 */
-	public $template_options;
 
 	/**
 	 * ...

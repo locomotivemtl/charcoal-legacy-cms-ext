@@ -102,27 +102,6 @@
         }
       }
     },
-    "template": {
-      "type": "object",
-      "obj_type": "CMS_Template",
-      "required": false,
-      "foreign_key": "ident",
-      "label": {
-        "en": "Template",
-        "fr": "Gabarit"
-      }
-    },
-    "template_options": {
-      "type": "json",
-      "label": {
-        "en": "Template configuration options",
-        "fr": "Options de configuration du gabarit"
-      },
-      "description": {
-        "en": "Every template can have a specific set of configuration options.",
-        "fr": "Chaque gabarit peut avoir ses options de configuration spécifiques."
-      }
-    },
     "category": {
       "type": "object",
       "input_type": "checkbox",
@@ -312,19 +291,6 @@
           "priority": 10
         },
         "template": {
-          "label": {
-            "en": "Template Information",
-            "fr": "Information de gabarit"
-          },
-          "properties": [
-            "template",
-            "template_options"
-          ],
-          "properties_options": {
-            "template_options": {
-              "hidden": true
-            }
-          },
           "priority": 14
         },
         "content": {
