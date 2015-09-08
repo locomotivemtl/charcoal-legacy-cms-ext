@@ -34,8 +34,8 @@
       "groups": {
         "template": {
           "label": {
-            "en": "Template Information",
-            "fr": "Information de gabarit"
+            "en": "Custom Template",
+            "fr": "Gabarit personnalisé"
           },
           "properties": [
             "template",
