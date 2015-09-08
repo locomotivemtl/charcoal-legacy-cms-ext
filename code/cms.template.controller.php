@@ -66,6 +66,37 @@ class CMS_Template_Controller extends Charcoal_Template_Controller
 	protected $_widgets_loader;
 
 	/**
+	 * Keep track of the current Mustache context
+	 *
+	 * @var string
+	 */
+	private static $__mustache_scope = null;
+
+	/**
+	 * Keep track of the last Mustache context
+	 *
+	 * @var string
+	 */
+	private static $__last_mustache_scope;
+
+	/**
+	 * Default values for array tracking.
+	 *
+	 * @var (string|int)[]
+	 */
+	private static $__array_pointer_defaults = [
+		'index' => 0,
+		'count' => 0
+	];
+
+	/**
+	 * Array pointers for tracking current index and collection count.
+	 *
+	 * @var mixed[][]
+	 */
+	private static $__array_pointers = [];
+
+	/**
 	 * Retrieve the template controller's primary module
 	 *
 	 * @return string
@@ -73,6 +104,129 @@ class CMS_Template_Controller extends Charcoal_Template_Controller
 	public function module()
 	{
 		return 'cms';
+	}
+
+	/**
+	 * Reset the product iteration pointer
+	 *
+	 * @return $this
+	 */
+	protected function reset_mustache_scope()
+	{
+		self::$__mustache_scope = ( self::$__last_mustache_scope ?: null );
+
+		return $this;
+	}
+
+	/**
+	 * Set a label for the current Mustache rendering context.
+	 *
+	 * Useful for instances of `Charcoal_Template_Controller` when
+	 * wanting to alter their output based on where it's rendering.*
+	 *
+	 * @param string|int $scope
+	 *
+	 * @return $this
+	 */
+	protected function set_mustache_scope( $scope = null )
+	{
+		self::$__last_mustache_scope = self::$__mustache_scope;
+
+		self::$__mustache_scope = $scope;
+
+		return $this;
+	}
+
+	/**
+	 * Get the current Mustache rendering context.
+	 *
+	 * @return string|int
+	 */
+	protected function get_mustache_scope()
+	{
+		return self::$_mustache_scope;
+	}
+
+	/**
+	 * Set an iterator. Will replace any existing iterators.
+	 *
+	 * @see self::get_iterator() To learn how to use internal iterators.
+	 *
+	 * @param string  $name
+	 * @param mixed[] $options Optional.
+	 *
+	 * @return $this
+	 */
+	protected function set_iterator( $name, $options = [] )
+	{
+		if ( is_array( $options ) && ! empty( $options ) ) {
+			$options = parse_config( self::$__array_pointer_defaults, $options );
+		}
+		else {
+			$options = self::$__array_pointer_defaults;
+		}
+
+		self::$__array_pointers[ $name ] = $options;
+
+		return $this;
+	}
+
+	/**
+	 * Retrieve an iterator.
+	 *
+	 * Array iterations in Mustache are "silent" on the template-end.
+	 * To track the progress of the iterator or to execute certain features
+	 * within a loop, you must implement a method much—like a `next()`—that
+	 * advances an internal array pointer (this instance retrieved from this
+	 * method). This "increment/decrement pointer" method must be accessible
+	 * as a template tag.
+	 *
+	 * @see PlaisirsGastronomiques\Template_Controller_Pg_Product::iterate_cooking_method() For an example.
+	 *
+	 * @param string     $name
+	 * @param string|int $index Optional. If TRUE, "next", or "+1", increment value.
+	 *                          If FALSE, "prev", "previous", or "-1", decrement value.
+	 *                          If integer, set index to provided value.
+	 *
+	 * @return mixed[] Returns the iterator, prior to any changes to the index.
+	 */
+	protected function get_iterator( $name, $index = null )
+	{
+		if ( isset( self::$__array_pointers[ $name ] ) ) {
+			$iterator  =  self::$__array_pointers[ $name ];
+			$reference = &self::$__array_pointers[ $name ];
+
+			if ( ! is_null( $index ) ) {
+				$has_changed = false;
+
+				if ( in_array( $index, [ true, 'next', '+1' ] ) ) {
+					$reference['index']++;
+					$has_changed = true;
+				}
+				elseif ( in_array( $index, [ false, 'prev', 'previous', '-1' ] ) ) {
+					$reference['index']--;
+					$has_changed = true;
+				}
+				elseif ( is_int( $index ) ) {
+					$reference['index'] = $index;
+					$has_changed = true;
+				}
+
+				if ( $has_changed ) {
+					if ( $reference['index'] < 0 ) {
+						$reference['index'] = ( $reference['count'] + $reference['index'] );
+					}
+
+					if ( $reference['index'] > $reference['count'] ) {
+						$reference['index'] = ( ( $reference['index'] - 1 ) - $reference['count'] );
+					}
+				}
+			}
+
+			return $iterator;
+		}
+
+		return [];
 	}
 
 	/**
