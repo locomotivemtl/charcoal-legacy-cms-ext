@@ -42,22 +42,32 @@ class Property_CMS_Template_Options extends Property_Json
 		$prop = $obj->p('template');
 
 		if ( $prop && ( $template = $prop->val() ) ) {
-			$tpl  = Charcoal_Template::get( $template );
-			$ctrl = $tpl->controller();
+			$tpl  = Charcoal::obj('CMS_Template')->load( $template );
+			$prop = $tpl->p('template_config');
 
-			$template_classes = $this->filter_template_classes([ get_class( $tpl ), get_class( $ctrl ) ]);
+			$view = Charcoal_Template::get( $template );
+			$ctrl = $view->controller();
+
+			$template_classes = $this->filter_template_classes(
+				array_merge(
+					( $prop && $prop->val() ? [ $prop ] : [] ),
+					[ $view, $ctrl ]
+				)
+			);
 			$default_classes  = $this->get_ignored_template_classes();
 
 			foreach	( $template_classes as $class ) {
-				if ( ! in_array( $class, $default_classes ) ) {
-					$config = $this->load_config( $class );
-					$data   = $config['data'];
+				$class_name = ( get_class( $class ) ?: $class );
 
-					if ( isset( $config['properties'] ) ) {
+				if ( ! in_array( $class_name, $default_classes ) ) {
+					$config = ( $class instanceof Property_JSON ? $class->as_array() : $this->load_config( $class_name ) );
+					$data   = ( empty( $config['data'] ) ? [] : $config['data'] );
+
+					if ( ! empty( $config['properties'] ) ) {
 						$data['fields_available'] = $config['properties'];
 					}
 
-					if ( isset( $data ) ) {
+					if ( ! empty( $data ) ) {
 						$this->set_data( $data );
 					}
 				}
