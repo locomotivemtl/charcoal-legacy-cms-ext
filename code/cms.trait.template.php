@@ -39,4 +39,24 @@ trait CMS_Trait_Template
 	 * @see Charcoal_Template_Controller
 	 */
 	public $template_options;
+
+	/**
+	 * Generate a "nonce" token.
+	 *
+	 * @return string
+	 */
+	public static function get_token()
+	{
+		return Charcoal::token('pg-template_options');
+	}
+
+	/**
+	 * Retrieve the Charcoal Action that processes template option reloading.
+	 *
+	 * @return string
+	 */
+	public function get_template_reload_action()
+	{
+		return 'cms.action.template.reload';
+	}
 }
