@@ -30,6 +30,13 @@ class CMS_Module extends Charcoal_Module
 	protected static $_is_ajax_request;
 
 	/**
+	 * Determine if the template controller is loaded.
+	 *
+	 * @var bool
+	 */
+	protected static $_is_controller_loaded;
+
+	/**
 	 * Module initialisation
 	 *
 	 * This function should act as both the initialization of the module and the front-page main controller.
@@ -134,6 +141,9 @@ class CMS_Module extends Charcoal_Module
 
 			// Section is already loaded, let's tell the controller about it.
 			$tpl->controller()->set_section($section);
+
+			self::is_controller_loaded(true);
+
 			echo $tpl->render();
 		}
 		else if ( $action ) {
@@ -144,6 +154,22 @@ class CMS_Module extends Charcoal_Module
 			// By nothing (404 page not found). This should never happen
 			exit('404');
 		}
+	}
+
+	/**
+	 * Determine if the template controller is loaded.
+	 *
+	 * @param bool|null $state Set the template controller's state.
+	 *
+	 * @return bool
+	 */
+	public static function is_controller_loaded( $state = null )
+	{
+		if ( is_bool( $state ) ) {
+			self::$_is_controller_loaded = $state;
+		}
+
+		return self::$_is_controller_loaded;
 	}
 
 	/**
