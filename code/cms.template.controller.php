@@ -97,6 +97,28 @@ class CMS_Template_Controller extends Charcoal_Template_Controller
 	private static $__array_pointers = [];
 
 	/**
+	 * Resolve additional request parameters related to the template controller.
+	 *
+	 * @return $this
+	 */
+	protected function resolve_request()
+	{
+		return $this;
+	}
+
+	/**
+	 * Handle any additional request operations for the template controller.
+	 *
+	 * @return $this
+	 */
+	public function handle_request()
+	{
+		$this->resolve_request();
+
+		return $this;
+	}
+
+	/**
 	 * Retrieve the template controller's primary module
 	 *
 	 * @return string
