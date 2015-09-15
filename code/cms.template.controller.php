@@ -405,7 +405,7 @@ class CMS_Template_Controller extends Charcoal_Template_Controller
 	 */
 	public function current_url()
 	{
-		return $this->base_url() . $_SERVER['REQUEST_URI'];
+		return $this->base_url() . ltrim( $this->context()->url(), '/\\' ) /* $_SERVER['REQUEST_URI'] */;
 	}
 
 	/**
