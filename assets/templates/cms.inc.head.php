@@ -24,6 +24,10 @@
 
 		<link rel="canonical" href="{{ current_url }}">
 
+		{{# all_translations }}
+		<link rel="alternate" hreflang="{{ locale }}" href="{{ full_url }}" title="{{ label_l7d }}">
+		{{/ all_translations }}
+
 		{{> widget.cms.typekit }}
 
 		{{> widget.cms.google_analytics }}

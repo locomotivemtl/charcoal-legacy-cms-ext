@@ -477,19 +477,27 @@ class CMS_Template_Controller extends Charcoal_Template_Controller
 	}
 
 	/**
-	 * Retrieve a utility for interacting with the context's translation, if any.
+	 * Retrieve a utility for interacting with the context's translations, if any.
+	 *
+	 * @param bool $include_self Optional
 	 *
 	 * @return mixed[]
 	 */
-	public function translation()
+	public function translations( $include_self = false )
 	{
 		$context      = $this->context();
-		$alternates   = get_alternate_languages();
 		$translations = new ArrayIterator;
+
+		if ( $include_self ) {
+			$languages = Charcoal::langs();
+		}
+		else {
+			$languages = get_alternate_languages();
+		}
 
 		$query_uri = parse_url( getenv('REQUEST_URI'), PHP_URL_QUERY );
 
-		foreach ( $alternates as $code ) {
+		foreach ( $languages as $code ) {
 			$url = $context->url( $code );
 
 			if ( empty( $url ) ) {
@@ -509,19 +517,38 @@ class CMS_Template_Controller extends Charcoal_Template_Controller
 			$abbr_l7d  = l10n( $_abbr, null, $code );
 
 			$translations[ $code ] = [
-				'code'      => $code,
-				'abbr'      => '<abbr title="' . $label . '">' . $abbr . '</abbr>',
-				'abbr_l7d'  => '<abbr title="' . $label_l7d . '">' . $abbr_l7d . '</abbr>',
-				'label'     => $label,
-				'label_l7d' => $label_l7d,
-				'locale'    => $locale,
-				'hreflang'  => ( $locale ? ' hreflang="' . $locale . '"' : false ),
-				'href'      => ' href="' . $url . '"',
-				'url'       => $url
+				'is_current' => ( _l() === $code ),
+				'code'       => $code,
+				'abbr'       => '<abbr title="' . $label . '">' . $abbr . '</abbr>',
+				'abbr_l7d'   => '<abbr title="' . $label_l7d . '">' . $abbr_l7d . '</abbr>',
+				'label'      => $label,
+				'label_l7d'  => $label_l7d,
+				'locale'     => $locale,
+				'hreflang'   => ( $locale ? ' hreflang="' . $locale . '"' : false ),
+				'href'       => ' href="' . $url . '"',
+				'full_href'  => ' href="' . ( $this->base_url() . $url ) . '"',
+				'url'        => $url,
+				'full_url'   => $this->base_url() . $url
 			];
 		}
 
 		return $translations;
+	}
+
+	/**
+	 * Alias of self::translations()
+	 */
+	public function all_translations()
+	{
+		return $this->translations(true);
+	}
+
+	/**
+	 * Alias of self::translations()
+	 */
+	public function translation()
+	{
+		return $this->translations();
 	}
 
 	/**
