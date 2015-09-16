@@ -18,6 +18,9 @@
  * All template controllers should inherit this trait.
  *
  * @package CMS\Objects
+ * @todo    McAskill [2015-09-16] Implement support for $_exact.
+ * @todo    McAskill [2015-09-16] Implement support for $_sentence.
+ * @todo    McAskill [2015-09-16] Implement support for $_stopwords.
  */
 trait CMS_Trait_Template_Controller_Search
 {
@@ -158,6 +161,16 @@ trait CMS_Trait_Template_Controller_Search
 	}
 
 	/**
+	 * Determine if the search query variable has contents.
+	 *
+	 * @return bool
+	 */
+	public function has_query()
+	{
+		return ! empty( $this->get_query() );
+	}
+
+	/**
 	 * Alias of self::get_query()
 	 */
 	public function keyword()
@@ -196,10 +209,14 @@ trait CMS_Trait_Template_Controller_Search
 						$obj_data['name'] = $obj_type;
 					}
 
-					if ( is_subclass_of( $obj_type, 'Interface_Searchable' ) ) {
-						$obj = Charcoal::obj( $obj_type );
+					if ( ! isset( $obj_data['method'] ) ) {
+						$obj_data['method'] = 'results_from_search';
+					}
 
-						$this->_results[ $obj_data['name'] ] = call_user_func( [ $obj, 'results_from_search' ], $query );
+					$callback = [ Charcoal::obj( $obj_type ), $obj_data['method'] ];
+
+					if ( is_callable( $callback ) ) {
+						$this->_results[ $obj_data['name'] ] = call_user_func( $callback, $query );
 					}
 				}
 			}
