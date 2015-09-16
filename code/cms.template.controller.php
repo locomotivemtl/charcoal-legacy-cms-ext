@@ -477,6 +477,49 @@ class CMS_Template_Controller extends Charcoal_Template_Controller
 	}
 
 	/**
+	 * Retrieve a utility for interacting with the context's translation, if any.
+	 *
+	 * @return mixed[]
+	 */
+	public function translation()
+	{
+		$context      = $this->context();
+		$alternates   = alternate_languages();
+		$translations = new ArrayIterator;
+
+		foreach ( $alternates as $code ) {
+			$url = $context->url( $code );
+
+			if ( empty( $url ) ) {
+				continue;
+			}
+
+			$lang   = get_language_config( $code );
+			$label  = l10n( $lang );
+			$locale = ( isset( $lang['locale'] ) ? $lang['locale'] : $code );
+			$_abbr  = ( isset( $lang['abbreviation'] ) ? $lang['abbreviation'] : mb_strtoupper( $code ) );
+			$abbr   = l10n( $_abbr );
+
+			$label_l7d = l10n( $lang, null, $code );
+			$abbr_l7d  = l10n( $_abbr, null, $code );
+
+			$translations[ $code ] = [
+				'code'      => $code,
+				'abbr'      => '<abbr title="' . $label . '">' . $abbr . '</abbr>',
+				'abbr_l7d'  => '<abbr title="' . $label_l7d . '">' . $abbr_l7d . '</abbr>',
+				'label'     => $label,
+				'label_l7d' => $label_l7d,
+				'locale'    => $locale,
+				'hreflang'  => ( $locale ? ' hreflang="' . $locale . '"' : false ),
+				'href'      => ' href="' . $url . '"',
+				'url'       => $url
+			];
+		}
+
+		return $translations;
+	}
+
+	/**
 	 * Render block of text.
 	 *
 	 * Would be called `render()` but currently used by {@see Charcoal_Base::render())

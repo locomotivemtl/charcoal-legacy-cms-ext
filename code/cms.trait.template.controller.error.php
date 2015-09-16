@@ -47,7 +47,7 @@ trait CMS_Trait_Template_Controller_Error
 			$data = $cfg['data'];
 
 			if ( $obj->p('external_url')->l10n() ) {
-				foreach ( array_keys( Charcoal::langs() ) as $lang ) {
+				foreach ( Charcoal::langs() as $lang ) {
 					$data['external_url'][ $lang ] = $url;
 				}
 			}

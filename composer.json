@@ -29,5 +29,10 @@
       "type": "vcs",
       "url": "https://github.com/locomotivemtl/charcoal-legacy-cms-meta"
     }
-  ]
+  ],
+  "autoload": {
+    "files": [
+      "code/functions.l10n.php"
+    ]
+  }
 }
