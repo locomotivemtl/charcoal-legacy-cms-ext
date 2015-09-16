@@ -1,0 +1,26 @@
+{
+  "module": "cms",
+
+  "data": {
+    "id": -1,
+    "active": true,
+    "ident": 404,
+    "slug": {
+      "en": "not-found",
+      "fr": "introuvable"
+    },
+    "section_type": "error",
+    "title": {
+      "en": "Page Not Found",
+      "fr": "Page Introuvable"
+    },
+    "subtitle": {
+      "en": "Sorry, that page doesn’t exist!",
+      "fr": "Désolé, cette page n’existe pas!"
+    },
+    "content": {
+      "en": "<p>This page may have moved or is no longer available. Please try one of the following:</p>\n<ul>\n\t<li>Check the Web address you entered to make sure if it’s correct.</li>\n\t<li>Try to access the page directly from the <a href=\"{{ base_url }}\">Home</a> page instead of using a bookmark. If the page has moved, reset your bookmark.</li>\n{{# mailto }}\t<li><a href=\"mailto:{{& mailto }}\">Report this technical issue</a>.</li>{{/ mailto }}\n</ul>",
+      "fr": "<p>Cette page est peut-être déplacé ou n’est plus disponible. S’il vous plaît essayer une des méthodes suivantes :</p>\n<ul>\n\t<li>Vérifier l’adresse Web que vous avez entré pour s’assurer si il est correct.</li>\n\t<li>Essayez d’accéder à la page directement depuis la page d’<a href=\"{{ base_url }}\">Accueil</a> au lieu d’utiliser un signet. Si la page a été déplacée, réinitialiser votre signet.</li>\n{{# mailto }}\t<li><a href=\"mailto:{{& mailto }}\">Signaler ce problème technique</a>.</li>{{/ mailto }}\n</ul>"
+    }
+  }
+}

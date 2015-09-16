@@ -477,6 +477,29 @@ class CMS_Template_Controller extends Charcoal_Template_Controller
 	}
 
 	/**
+	 * Render block of text.
+	 *
+	 * Would be called `render()` but currently used by {@see Charcoal_Base::render())
+	 * for Charcoal-style pattern remplacements.
+	 *
+	 * @return Closure[] {
+	 *     Returns an associative array of Closures that create a new instance
+	 *     of Charcoal\Asset with the desired $file.
+	 *
+	 *     @type string                $text   Block of text.
+	 *     @type Mustache_LambdaHelper $lambda An instance of the Mustache LambdaHelper object.
+	 *
+	 *     @return string
+	 * }
+	 */
+	public function parse()
+	{
+		return function ( $text, Mustache_LambdaHelper $lambda ) {
+			return $lambda->render( $text );
+		};
+	}
+
+	/**
 	 * Retrieve the name of the template as a CSS-friendly class name.
 	 *
 	 * Replaces invalid characters, such as dots for underscores.
