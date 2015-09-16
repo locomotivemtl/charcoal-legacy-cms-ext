@@ -51,7 +51,7 @@ function is_language_hidden( $lang = '' )
 
 	if ( is_language_valid( $lang ) ) {
 		if ( isset( Charcoal::$config['languages'][ $lang ]['hidden'] ) ) {
-			return ! Charcoal::$config['languages'][ $lang ]['hidden'];
+			return Charcoal::$config['languages'][ $lang ]['hidden'];
 		}
 	}
 	else {
@@ -92,7 +92,7 @@ function get_language_config( $lang = '' )
  *
  * @return string|string[] An array of languages. In a bilingual context, a string.
  */
-function alternate_languages( $skip = '', $bilingual = false )
+function get_alternate_languages( $skip = '', $bilingual = false )
 {
 	if ( empty( $skip ) ) {
 		$skip = _l();
@@ -106,7 +106,7 @@ function alternate_languages( $skip = '', $bilingual = false )
 	$alternates = [];
 
 	foreach ( Charcoal::langs() as $code ) {
-		if ( $skip === $code || is_language_hidden($code) ) {
+		if ( $skip === $code || is_language_hidden( $code ) ) {
 			continue;
 		}
 

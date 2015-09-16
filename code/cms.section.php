@@ -101,7 +101,9 @@ class CMS_Section extends Charcoal_Object implements
 		CMS_Trait_Template,
 		Trait_Url_Slug,
 		Trait_Metadata_Basic,
-		Trait_Metadata_OpenGraph;
+		Trait_Metadata_OpenGraph {
+			Charcoal\Trait_Url::url as _url;
+		}
 
 // Properties
 // ==========================================================================
@@ -289,6 +291,29 @@ class CMS_Section extends Charcoal_Object implements
 		if ( ! $old || ( ( $old instanceof Charcoal_Object ) && ( $old->ident !== $this->ident ) ) ) {
 			$this->ident = generate_unique_object_ident( $this->p('ident') );
 		}
+	}
+
+
+
+// Methods: Charcoal\Trait_URL
+// ==========================================================================
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function url( $lang = '', $options = null)
+	{
+		if ( empty( $lang ) ) {
+			$lang = _l();
+		}
+
+		$config = CMS_Config::get_latest();
+
+		if ( $this->id() === $config->v('default_section') ) {
+			return Charcoal::$config['URL'] . $lang . '/';
+		}
+
+		return $this->_url( $lang, $options );
 	}
 
 

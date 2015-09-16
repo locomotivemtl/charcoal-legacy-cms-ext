@@ -78,7 +78,7 @@ class CMS_Module extends Charcoal_Module
 	 */
 	protected static function parse_request( $options, &$action, &$section_id, &$language )
 	{
-		$config = Pg_Config::get_latest();
+		$config = CMS_Config::get_latest();
 
 		$defaults = [
 			'default_action'  => null,

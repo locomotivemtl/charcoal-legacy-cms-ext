@@ -484,7 +484,7 @@ class CMS_Template_Controller extends Charcoal_Template_Controller
 	public function translation()
 	{
 		$context      = $this->context();
-		$alternates   = alternate_languages();
+		$alternates   = get_alternate_languages();
 		$translations = new ArrayIterator;
 
 		foreach ( $alternates as $code ) {
@@ -495,12 +495,12 @@ class CMS_Template_Controller extends Charcoal_Template_Controller
 			}
 
 			$lang   = get_language_config( $code );
-			$label  = l10n( $lang );
+			$label  = l10n( $lang['label'] );
 			$locale = ( isset( $lang['locale'] ) ? $lang['locale'] : $code );
 			$_abbr  = ( isset( $lang['abbreviation'] ) ? $lang['abbreviation'] : mb_strtoupper( $code ) );
 			$abbr   = l10n( $_abbr );
 
-			$label_l7d = l10n( $lang, null, $code );
+			$label_l7d = l10n( $lang['label'], null, $code );
 			$abbr_l7d  = l10n( $_abbr, null, $code );
 
 			$translations[ $code ] = [
