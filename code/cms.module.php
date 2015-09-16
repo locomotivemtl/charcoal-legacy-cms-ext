@@ -100,7 +100,7 @@ class CMS_Module extends Charcoal_Module
 		}
 
 		// Resolve the current language
-		if ( ! $language || ! in_array( $language, Charcoal::$config['languages'] ) ) {
+		if ( ! $language || ! in_array( $language, Charcoal::langs() ) ) {
 			if ( $options['default_lang'] ) {
 				$language = $options['default_lang'];
 			}

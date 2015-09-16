@@ -405,7 +405,7 @@ class CMS_Template_Controller extends Charcoal_Template_Controller
 	 */
 	public function current_url()
 	{
-		return $this->base_url() . ltrim( $this->context()->url(), '/\\' ) /* $_SERVER['REQUEST_URI'] */;
+		return $this->base_url() . ltrim( $this->context()->url(), '/\\' ) /* getenv('REQUEST_URI') */;
 	}
 
 	/**
@@ -487,11 +487,16 @@ class CMS_Template_Controller extends Charcoal_Template_Controller
 		$alternates   = get_alternate_languages();
 		$translations = new ArrayIterator;
 
+		$query_uri = parse_url( getenv('REQUEST_URI'), PHP_URL_QUERY );
+
 		foreach ( $alternates as $code ) {
 			$url = $context->url( $code );
 
 			if ( empty( $url ) ) {
 				continue;
+			}
+			elseif ( ! empty( $query_uri ) ) {
+				$url .= '?' . $query_uri;
 			}
 
 			$lang   = get_language_config( $code );

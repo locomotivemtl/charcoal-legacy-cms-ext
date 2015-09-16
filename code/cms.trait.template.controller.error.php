@@ -43,7 +43,7 @@ trait CMS_Trait_Template_Controller_Error
 		if ( ! isset( $this->_mock_obj ) ) {
 			$obj  = Charcoal::obj('CMS_Section');
 			$cfg  = $obj->load_config( $this->error_code() );
-			$url  = $this->base_url() . ltrim( $_SERVER['REQUEST_URI'], '/\\' );
+			$url  = $this->current_url();
 			$data = $cfg['data'];
 
 			if ( $obj->p('external_url')->l10n() ) {
@@ -86,7 +86,7 @@ trait CMS_Trait_Template_Controller_Error
 	 */
 	public function current_url()
 	{
-		return $this->base_url() . ltrim( $_SERVER['REQUEST_URI'], '/\\' );
+		return $this->base_url() . ltrim( getenv('REQUEST_URI'), '/\\' );
 	}
 
 }
