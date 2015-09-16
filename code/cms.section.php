@@ -310,7 +310,7 @@ class CMS_Section extends Charcoal_Object implements
 		$config = CMS_Config::get_latest();
 
 		if ( $this->id() === $config->v('default_section') ) {
-			return Charcoal::$config['URL'] . $lang . '/';
+			return $lang . '/';
 		}
 
 		return $this->_url( $lang, $options );
