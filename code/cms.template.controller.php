@@ -38,6 +38,13 @@ class CMS_Template_Controller extends Charcoal_Template_Controller
 	protected $_section;
 
 	/**
+	 * Keep a copy of the current context's template options
+	 *
+	 * @var mixed
+	 */
+	protected $_template_options;
+
+	/**
 	 * Keep a copy of the Section Object loader
 	 *
 	 * @var Charcoal_Object_Loader
@@ -263,6 +270,46 @@ class CMS_Template_Controller extends Charcoal_Template_Controller
 		$this->_context = $context;
 
 		return $this;
+	}
+
+	/**
+	 * Retrieve the context's template options.
+	 *
+	 * @uses self::get_context_for_template_options()
+	 *
+	 * @param bool $reload Optional. Reload the template options from the context.
+	 *
+	 * @return mixed
+	 */
+	public function get_template_options( $reload = false )
+	{
+		if ( ! isset( $this->_template_options ) || $reload ) {
+			$options = $this->get_context_for_template_options()->p('template_options');
+
+			if ( $options ) {
+				$this->_template_options = $options->as_charcoal_object();
+			}
+			else {
+				$this->_template_options = false;
+			}
+		}
+
+		return $this->_template_options;
+	}
+
+	/**
+	 * Retrieve the desired context for template options.
+	 *
+	 * If the {@see self::context()} isn't a Charcoal Object with a "template_options" property,
+	 * this is the method that should be re-implemented in your sub-template controller.
+	 *
+	 * @used-by self::get_template_options()
+	 *
+	 * @return Charcoal_Object
+	 */
+	protected function get_context_for_template_options()
+	{
+		return $this->context();
 	}
 
 	/**
