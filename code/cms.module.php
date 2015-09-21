@@ -267,6 +267,70 @@ class CMS_Module extends Charcoal_Module
 	}
 
 	/**
+	 * Generate a "nonce" token.
+	 *
+	 * @return string
+	 */
+	public static function get_token()
+	{
+		return Charcoal::token( isset( Charcoal::$config['nonce'] ) ? Charcoal::$config['nonce'] : null );
+	}
+
+	/**
+	 * Encrypt the provided data as a parcel.
+	 *
+	 * Usefull for generating small hashs of dynamic data for small AJAX requests.
+	 *
+	 * @param mixed $data
+	 * @param mixed $key  Optional
+	 *
+	 * @return string
+	 */
+	public static function encrypt_parcel( $data, $key = null )
+	{
+		$cipher = new \Charcoal_Cipher('base64');
+
+		if ( is_null( $key ) ) {
+			$key = self::get_token();
+		}
+
+		if ( is_array( $data ) || is_object( $data ) ) {
+			$data = json_encode( $data );
+		}
+
+		return $cipher->encrypt( $data, $key );
+	}
+
+	/**
+	 * Decrypt the provided parcel.
+	 *
+	 * @param string $hash
+	 * @param mixed  $key  Optional
+	 *
+	 * @return mixed
+	 */
+	public static function decrypt_parcel( $hash, $key = null, $is_array = true )
+	{
+		$cipher = new \Charcoal_Cipher('base64');
+
+		if ( is_null( $key ) ) {
+			$key = self::get_token();
+		}
+
+		$data = $cipher->decrypt( $hash, $key );
+
+		if ( $is_array ) {
+			if ( JSON::is_valid( $data ) ) {
+				return json_decode( $data, true );
+			}
+
+			return false;
+		}
+
+		return $data;
+	}
+
+	/**
 	 * Determine if the request is the result of an AJAX call.
 	 *
 	 * @param bool $define_const Optional. Defines the IS_AJAX constant, if undefined.
