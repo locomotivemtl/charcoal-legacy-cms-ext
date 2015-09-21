@@ -25,6 +25,13 @@
 trait CMS_Trait_Template_Controller_Search
 {
 	/**
+	 * Search Event Type
+	 *
+	 * @var string
+	 */
+	protected $event_type;
+
+	/**
 	 * Search Results
 	 *
 	 * @var Charcoal_Object[]
@@ -69,6 +76,8 @@ trait CMS_Trait_Template_Controller_Search
 		$this->set_query( filter_input(INPUT_GET, 's', FILTER_SANITIZE_STRING) );
 		$this->set_exact( filter_input(INPUT_GET, 'exact', FILTER_SANITIZE_NUMBER_INT) );
 		$this->set_sentence( filter_input(INPUT_GET, 'sentence', FILTER_SANITIZE_NUMBER_INT) );
+
+		$this->event_type = 'search';
 
 		$this->log_query();
 
@@ -303,8 +312,12 @@ trait CMS_Trait_Template_Controller_Search
 			return;
 		}
 
+		if ( ! is_array( $query ) && ! is_object( $query ) ) {
+			$query = [ $query ];
+		}
+
 		$log = new Charcoal_Log;
-		$log->event_type = 'search';
+		$log->event_type = $this->event_type;
 		$log->data = $query;
 		$log->save();
 	}
