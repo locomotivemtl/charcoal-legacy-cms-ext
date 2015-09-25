@@ -622,32 +622,6 @@ class CMS_Template_Controller extends Charcoal_Template_Controller
 	}
 
 	/**
-	 * Retrieve the name of the template as a CSS-friendly class name.
-	 *
-	 * Replaces invalid characters, such as dots for underscores.
-	 *
-	 * @return string
-	 */
-	public function template_class()
-	{
-		$token   = $this->section()->template;
-		$search  = [ "{$this->module()}.", '.' ];
-		$replace = [ '', '_' ];
-
-		if ( is_numeric($token) ) {
-			$token = preg_replace( '/\D+/', '', $token );
-			return $token;
-		}
-		else {
-			$token = str_replace( $search, $replace,$token );
-			$token = preg_replace( '/[^\w-]/', '', strtolower($token) );
-			return $token;
-		}
-
-		return $token;
-	}
-
-	/**
 	 * Output additional data in the `<head>` of the HTML document.
 	 *
 	 * This method is meant to be reimplemented in a child template controller.

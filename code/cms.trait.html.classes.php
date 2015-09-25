@@ -12,6 +12,8 @@
 
 namespace CMS;
 
+use \Charcoal as Charcoal;
+
 /**
  * Trait: HTML Document Class Attributes
  *
@@ -76,7 +78,7 @@ trait Trait_HTML_Classes
 	{
 		$classes = [];
 
-		$classes[] = 'no-js';
+		$classes[] = 'has-no-js';
 
 		return $this->filter_html_class( $classes, $class );
 	}
@@ -106,15 +108,36 @@ trait Trait_HTML_Classes
 	 */
 	protected function get_body_class( $class = '' )
 	{
-		$classes = [];
+		$classes  = [];
+		$context  = $this->context();
+		$section  = $this->section();
+		$obj_type = Charcoal::str_to_ident( $this->context_type() );
 
-		if ( $this->context()->id() ) {
-			$classes[] = 'section--' . $this->context()->id();
+		$tpl  = $this->ident();
+		$ctrl = $this->parent_template()->ident();
+
+		if ( $section->v('ident') ) {
+			$classes[] = 'section--' . $section->v('ident');
 		}
 
-		if ( $this->context()->v('template') ) {
-			$classes[] = 'template--' . str_replace( [ '.', $this->module() ], '', $this->context()->v('template') );
+		if ( $obj_type ) {
+			$classes[] = $obj_type;
+
+			if ( $context->id() ) {
+				$classes[] = $obj_type . '--' . $context->id();
+			}
 		}
+
+		if ( $tpl ) {
+			$classes[] = 'template--' . $tpl;
+		}
+
+		if ( $ctrl && $tpl !== $ctrl ) {
+			$classes[] = 'template--' . $ctrl;
+		}
+
+		$classes = str_replace( '.', '-', $classes );
+		# $classes = str_replace( $this->module(), '', $classes );
 
 		return $this->filter_html_class( $classes, $class );
 	}
