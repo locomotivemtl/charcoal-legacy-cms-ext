@@ -28,11 +28,12 @@
 		<link rel="alternate" hreflang="{{ locale }}" href="{{ full_url }}" title="{{ label_l7d }}">
 		{{/ all_translations }}
 
+		<?php echo Charcoal::get_js('head'); ?>
+		<?php echo Charcoal::get_css(); ?>
+
 		{{> widget.cms.typekit }}
 
 		{{> widget.cms.google_analytics }}
 		{{/ filter_document_head }}
-
-
 	</head>
 	<body{{&html_class.body}}>

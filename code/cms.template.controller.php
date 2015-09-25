@@ -126,6 +126,16 @@ class CMS_Template_Controller extends Charcoal_Template_Controller
 	}
 
 	/**
+	 * Enqueue assets (scripts & styles) related to the template controller.
+	 *
+	 * @return $this
+	 */
+	public function enqueue_assets()
+	{
+		return $this;
+	}
+
+	/**
 	 * Retrieve the template controller's primary module
 	 *
 	 * @return string
