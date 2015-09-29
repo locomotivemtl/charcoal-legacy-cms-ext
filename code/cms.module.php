@@ -370,6 +370,97 @@ class CMS_Module extends Charcoal_Module
 	}
 
 	/**
+	 * Gets external variables and optionally sanitizes them.
+	 *
+	 * @param int                          $type        One of INPUT_GET, INPUT_POST, INPUT_COOKIE, INPUT_SERVER, or INPUT_ENV.
+	 * @param string|Charcoal_Object       $obj_type    The object from which to map $properties to PHP filter types.
+	 * @param string[]|Charcoal_Property[] $properties  An array of Charcoal Properties defining the request parameters to sanitize and return.
+	 *
+	 * @return mixed[] An array containing the values of the requested variables on success, or FALSE on failure.
+	 */
+	public static function filter_input_properties( $type, $obj_type, $properties = [], $add_empty = true )
+	{
+		if ( is_string( $obj_type ) ) {
+			$obj_type = Charcoal::obj( $obj_type );
+		}
+
+		if ( ! $obj_type instanceof Charcoal_Object ) {
+			throw new InvalidArgumentException( 'A valid Charcoal Object is required.');
+		}
+
+		if ( ! is_array( $properties ) ) {
+			$properties = [ $properties ];
+		}
+
+		if ( empty( $properties ) ) {
+			$properties = $obj_type->properties();
+		}
+
+		foreach ( $properties as $key => $ident ) {
+			if ( is_string( $ident ) ) {
+				$prop = $obj_type->p( $ident );
+			}
+			else {
+				$prop  = $ident;
+				$ident = $key;
+			}
+
+			$is_prop   = ( $prop instanceof Charcoal_Property );
+			$prop_type = ( $is_prop && $prop->type ? $prop->type : null );
+
+			switch ( $prop_type ) {
+				case 'email':
+					$args[ $ident ] = FILTER_SANITIZE_EMAIL;
+					break;
+
+				case 'url':
+					$args[ $ident ] = FILTER_SANITIZE_URL;
+					break;
+
+				case 'boolean':
+					$args[ $ident ] = FILTER_VALIDATE_BOOLEAN;
+					break;
+
+				case 'year':
+				case 'month':
+				case 'integer':
+				case 'number':
+					$args[ $ident ] = FILTER_SANITIZE_NUMBER_INT;
+					break;
+
+				case 'location_coordinate':
+				case 'location_latitude':
+				case 'location_longitude':
+				case 'float':
+					$args[ $ident ] = FILTER_SANITIZE_NUMBER_FLOAT;
+					break;
+
+				default:
+					$args[ $ident ] = FILTER_SANITIZE_STRING;
+					break;
+			}
+
+			if ( $is_prop && $prop->multiple() ) {
+				$args[ $ident ] = [
+					'filter'  => $args[ $ident ],
+					'flags'   => FILTER_REQUIRE_ARRAY,
+					'options' => []
+				];
+
+				if ( method_exists( $prop, 'min' ) && $prop->min() ) {
+					$args[ $ident ]['options']['min_range'] = $prop->min();
+				}
+
+				if (method_exists( $prop, 'max' ) && $prop->max() ) {
+					$args[ $ident ]['options']['max_range'] = $prop->max();
+				}
+			}
+		}
+
+		return filter_input_array( $type, $args );
+	}
+
+	/**
 	 * Determine if the request is the result of an AJAX call.
 	 *
 	 * @param mixed ... {
