@@ -1,0 +1,19 @@
+{
+  "properties": {
+    "external_url": {
+      "active": false
+    },
+    "master": {
+      "active": false
+    },
+    "item_type": {
+      "active": false
+    },
+    "position": {
+      "active": false
+    },
+    "num_items": {
+      "active": false
+    }
+  }
+}

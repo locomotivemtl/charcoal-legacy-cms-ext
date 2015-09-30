@@ -1,0 +1,225 @@
+{
+  "config_type": "object",
+  "config_version": 1,
+
+  "module": "cms",
+
+  "name": {
+    "en": "Contact Entry",
+    "fr": "Entrée de contact"
+  },
+
+  "properties": {
+    "category": {
+      "type": "object",
+      "obj_type": "CMS_Contact_Category",
+      "foreign_key": "ident",
+      "label": {
+        "en": "Category",
+        "fr": "Catégorie"
+      }
+    },
+    "email": {
+      "active": true,
+      "required": true
+    },
+    "telephone": {
+      "active": true
+    },
+    "name": {
+      "active": false
+    },
+    "name_first": {
+      "active": true,
+      "required": true
+    },
+    "name_last": {
+      "active": true,
+      "required": true
+    },
+    "subject": {
+      "type": "string",
+      "required": true,
+      "label": {
+        "fr": "Sujet",
+        "en": "Subject"
+      }
+    },
+    "message": {
+      "type": "text",
+      "required": true,
+      "label": {
+        "fr": "Message",
+        "en": "Message"
+      }
+    }
+  },
+
+  "sources": {
+    "default": {
+      "table": "cms_contact_entries",
+      "table_type": "innodb"
+    }
+  },
+  "default_source": "default",
+
+  "lists": {
+    "admin": {
+      "label": {
+        "en": "List of Entries",
+        "fr": "Liste des entrées"
+      },
+      "properties": [
+        "category",
+        "email",
+        "name_first",
+        "name_last",
+        "subject",
+        "user_ip",
+        "date_created",
+        "active"
+      ],
+      "orders": [
+        {
+          "property": "date_created",
+          "mode": "desc"
+        }
+      ],
+      "pagination": {
+        "num_per_page_options": [
+          50,
+          100,
+          250,
+          500
+        ],
+        "num_per_page": 100
+      }
+    },
+    "export.csv": {
+      "label":{
+        "en": "List for CSV Export",
+        "fr": "Liste pour l'export CSV"
+      },
+      "properties": []
+    }
+  },
+  "default_list": "admin",
+
+  "forms": {
+    "admin": {
+      "groups": {
+        "info": {
+          "label": "Information",
+          "properties": [
+            "id",
+            "active",
+            "category"
+          ],
+          "properties_options": {
+            "id": {
+              "hidden": true
+            }
+          },
+          "priority": 10
+        },
+        "message": {
+          "label": "Message",
+          "properties": [
+            "subject",
+            "message"
+          ],
+          "properties_options": {
+            "subject": {
+              "read_only": true
+            },
+            "message": {
+              "read_only": true
+            }
+          },
+          "priority": 12
+        },
+        "user-identity": {
+          "hidden": false,
+          "priority": 20
+        },
+        "user-organization": {
+          "hidden": false,
+          "priority": 22
+        },
+        "user-metadata": {
+          "hidden": false,
+          "priority": 30
+        }
+      }
+    }
+  },
+  "default_form": "admin",
+
+  "dashboards": {
+    "list": {
+      "type": "list",
+      "layout": [
+        {
+          "num_columns": 3,
+          "columns": [
+            "1",
+            "2"
+          ]
+        },
+        {
+          "num_columns": 1,
+          "columns": [
+            "1"
+          ]
+        },
+        {
+          "num_columns": 1,
+          "columns": [
+            "1"
+          ]
+        }
+      ],
+      "widgets": [
+        "contact_num",
+        "contact_stats",
+        "list",
+        "list_action"
+      ],
+      "widgets_options": {
+        "newsletter_num": {
+          "type": "admin.newsletter.contact.num",
+          "label": {
+            "en": "Statistics",
+            "fr": "Statistiques"
+          },
+          "options": {
+            "date_property": "date_created"
+          }
+        },
+        "newsletter_stats": {
+          "type": "admin.newsletter.contact.stats",
+          "label": {
+            "en": "Graph",
+            "fr": "Graphique"
+          },
+          "options": {
+            "date_property": "date_created"
+          }
+        },
+        "list": {
+          "display_label": false
+        },
+        "list_actions": {
+          "display_label": false
+        }
+      }
+    }
+  },
+  "dashboard_list": "list",
+
+  "patterns": {
+    "default": "{{email}}",
+    "list_popup": "<div><p>{{date_created:fuzzy}}</p>{{message}}</div>"
+  },
+  "default_pattern": "default"
+}

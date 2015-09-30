@@ -27,7 +27,8 @@ use \Charcoal as Charcoal;
  */
 class CMS_Contact_Entry extends Charcoal_Object
 {
-	use Core_Trait_User_Identity,
+	use // CMS_Trait_User_Stats,
+		Core_Trait_User_Identity,
 		Core_Trait_User_Organization,
 		Core_Trait_User_Metadata;
 
@@ -192,12 +193,4 @@ class CMS_Contact_Entry extends Charcoal_Object
 
 		return $replacements;
 	}
-	/**
-	 * Validate User Data
-	 *
-	 * @return array
-	 */
-
-	public function validate( $properties = null )
-	{
 }
