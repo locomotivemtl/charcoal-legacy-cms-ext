@@ -609,22 +609,25 @@ class CMS_Template_Controller extends Charcoal_Template_Controller
 	}
 
 	/**
-	 * Render block of text.
+	 * Pre-render, with Mustache, a block of text.
 	 *
 	 * Would be called `render()` but currently used by {@see Charcoal_Base::render())
 	 * for Charcoal-style pattern remplacements.
 	 *
-	 * @return Closure[] {
-	 *     Returns an associative array of Closures that create a new instance
-	 *     of Charcoal\Asset with the desired $file.
+	 * @return Closure {
+	 *     Returns a Closure that provides a way to recursively render any Mustache tags
+	 *     within the block of text that will be rendered.
+	 *
+	 *     Without this `pre_render()` method, Mustache would only render the initial tag
+	 *     and ignore any Mustache tags within.
 	 *
 	 *     @type string                $text   Block of text.
-	 *     @type Mustache_LambdaHelper $lambda An instance of the Mustache LambdaHelper object.
+	 *     @type Mustache_LambdaHelper $lambda An instance of the {@see Mustache_LambdaHelper} object.
 	 *
 	 *     @return string
 	 * }
 	 */
-	public function parse()
+	public function pre_render()
 	{
 		return function ( $text, Mustache_LambdaHelper $lambda ) {
 			return $lambda->render( $text );
