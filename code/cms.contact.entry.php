@@ -178,16 +178,21 @@ class CMS_Contact_Entry extends Charcoal_Object
 		$replacements = array_merge(
 			$this->_user_metadata_email_replacements(),
 			[
-				'email'         => $this->p('email')->text(),
-				'name_first'    => $this->p('name_first')->text(),
-				'name_last'     => $this->p('name_last')->text(),
+				'email'            => $this->p('email')->text(),
+				'name_first'       => $this->p('name_first')->text(),
+				'name_last'        => $this->p('name_last')->text(),
 
-				'organization'  => $this->p('organization')->text(),
-				'title'         => $this->p('title')->text(),
+				'organization'     => $this->p('organization')->text(),
+				'title'            => $this->p('title')->text(),
 
-				'category_name' => $category->p('name')->text(),
+				'message'          => $this->p('message')->text(),
+				'subject'          => $this->p('subject')->text(),
 
-				'url_site'      => Charcoal::$config['URL']
+				'category_name'    => $category->p('name')->text(),
+				'category_subject' => $category->p('subscription_email_subject')->text(),
+
+				'base_url'         => Charcoal::$config['URL'],
+				'lang'             => _l()
 			]
 		);
 
