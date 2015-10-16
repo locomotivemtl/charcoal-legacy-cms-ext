@@ -133,10 +133,6 @@ class CMS_Module extends Charcoal_Module
 
 			$section = $section_loader->{ $section_id };
 
-			if ( $section->template ) {
-				// What to do?
-			}
-
 			$tpl = Charcoal_Template::get($section->template);
 
 			// Section is already loaded, let's tell the controller about it.
@@ -147,9 +143,13 @@ class CMS_Module extends Charcoal_Module
 
 			self::is_controller_loaded(true);
 
+			if ( ! $tpl->template() ) {
+				$tpl = Charcoal_Template::get(404);
+			}
+
 			echo $tpl->render();
 		}
-		else if ( $action ) {
+		elseif ( $action ) {
 			// By action
 			Charcoal::exec($action, $_REQUEST);
 		}
