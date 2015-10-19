@@ -18,6 +18,8 @@ use \CMS\Interface_Content_Metadata_OpenGraph as Interface_Metadata_OpenGraph;
 use \CMS\Trait_Content_Metadata_OpenGraph     as Trait_Metadata_OpenGraph;
 use \CMS\Interface_Content_Metadata_Basic     as Interface_Metadata_Basic;
 use \CMS\Trait_Content_Metadata_Basic         as Trait_Metadata_Basic;
+use \CMS\Interface_Content_Metadata_Keywords  as Interface_Metadata_Keywords;
+use \CMS\Trait_Content_Metadata_Keywords      as Trait_Metadata_Keywords;
 
 /**
  * Class: CMS Section
@@ -92,6 +94,7 @@ use \CMS\Trait_Content_Metadata_Basic         as Trait_Metadata_Basic;
  */
 class CMS_Section extends Charcoal_Object implements
 	Interface_Metadata_Basic,
+	Interface_Metadata_Keywords,
 	Interface_Metadata_OpenGraph
 {
 	use Charcoal\Trait_Category,
@@ -101,6 +104,7 @@ class CMS_Section extends Charcoal_Object implements
 		CMS_Trait_Template,
 		Trait_Url_Slug,
 		Trait_Metadata_Basic,
+		Trait_Metadata_Keywords,
 		Trait_Metadata_OpenGraph {
 			Charcoal\Trait_Url::url as _url;
 		}
