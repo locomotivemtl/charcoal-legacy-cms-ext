@@ -197,7 +197,7 @@ trait CMS_Trait_Template_Controller_Search
 		if ( ! isset( $this->_results ) ) {
 			$query = $this->get_query();
 
-			$this->_results = new ArrayIterator;
+			$this->_results = [];
 
 			if ( $query && ! empty( Charcoal::$config['search']['objects'] ) ) {
 				$objs = Charcoal::$config['search']['objects'];
@@ -214,6 +214,10 @@ trait CMS_Trait_Template_Controller_Search
 						$obj_data = [];
 					}
 
+					if ( isset( $obj_data['active'] ) && ! $obj_data['active'] ) {
+						continue;
+					}
+
 					if ( ! isset( $obj_data['name'] ) ) {
 						$obj_data['name'] = $obj_type;
 					}
@@ -226,6 +230,9 @@ trait CMS_Trait_Template_Controller_Search
 
 					if ( is_callable( $callback ) ) {
 						$this->_results[ $obj_data['name'] ] = call_user_func( $callback, $query );
+					}
+					elseif ( isset( $obj_data['options'] ) ) {
+						$this->_results[ $obj_data['name'] ] = $this->__results_from_search( $obj_type, $obj_data['options'], $query );
 					}
 				}
 			}
@@ -259,6 +266,102 @@ trait CMS_Trait_Template_Controller_Search
 	public function has_results()
 	{
 		return (bool) $this->total_results();
+	}
+
+	/**
+	 * Retrieve the objects based on the search query.
+	 *
+	 * A generic search query if a custom search method, such as `results_from_search()`,
+	 * isn't specified.
+	 *
+	 * @param string|Charcoal_Object $obj_type     A prototype of the desired content type to search.
+	 * @param mixed[]                $options      Options, such as listing the Charcoal Properties (database columns) to search.
+	 * @param string|string[]        $search_terms One or more search terms.
+	 *
+	 * @return Charcoal_Object[]|Charcoal_List
+	 */
+	protected static function __results_from_search( $obj_type, $options, $search_terms )
+	{
+		if ( ! $search_terms ) {
+			return [];
+		}
+
+		if ( $obj_type instanceof Charcoal_Object ) {
+			$proto    = $obj_type;
+			$obj_type = $proto->obj_type();
+		}
+		else {
+			$proto = Charcoal::obj( $obj_type );
+		}
+
+		$l = _l();
+
+		if ( isset( $options['select'] ) ) {
+			$select = implode( ', ', $options['select'] );
+		}
+		else {
+			$select = '*';
+		}
+
+		if ( isset( $options['fulltext'] ) ) {
+			$match = [];
+
+			foreach ( $options['fulltext'] as $p ) {
+				$prop = $proto->p( $p );
+
+				if ( $prop ) {
+					$match[ $p ] = ( $prop->l10n() ? "`{$p}_{$l}`" : "`{$p}`" );
+				}
+			}
+
+			$match = implode( ', ', $match );
+
+			if ( $match ) {
+				$match = 'MATCH(' . $match . ') AGAINST(:s1 IN NATURAL LANGUAGE MODE)';
+			}
+		}
+		else {
+			$match = '';
+		}
+
+		if ( isset( $options['like'] ) ) {
+			$like = [];
+
+			foreach ( $options['like'] as $p ) {
+				$prop = $proto->p( $p );
+
+				if ( $prop ) {
+					$like[ $p ] = '`' . $p . ( $prop->l10n() ? '_' . $l : '' ) . '` LIKE :s2';
+				}
+			}
+
+			$like = implode( ' OR ', $like );
+		}
+		else {
+			$like = '';
+		}
+
+		if ( ! $match && ! $like ) {
+			return [];
+		}
+
+		$sql_query = '
+			SELECT
+				' . $select . ',
+				' . $match . ' AS `relevance`
+			FROM
+				`' . $proto->table() . '`
+			WHERE
+				`active` = 1
+			AND
+				( ' . $match . ( $match && $like ? ' OR ' : '' ) . $like . ' )
+			ORDER BY
+				`relevance` DESC';
+
+		return Charcoal::obj_list( $obj_type )->load_from_query( $sql_query, [
+			':s1' => $search_terms,
+			':s2' => '%' . htmlentities( $search_terms, ENT_COMPAT, 'UTF-8' ) . '%'
+		] );
 	}
 
 	/**
