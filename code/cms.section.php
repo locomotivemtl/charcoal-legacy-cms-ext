@@ -347,6 +347,20 @@ class CMS_Section extends Charcoal_Object implements
 		return parent::pre_update();
 	}
 
+	/**
+	 * Retrieve the excerpt of the object.
+	 *
+	 * This is either a user-supplied "summary", that is returned unchanged,
+	 * or an automatically generated word-counted trimmed-down version of the
+	 * full "description".
+	 *
+	 * @return string
+	 */
+	public function get_excerpt()
+	{
+		return trim_words( $this->p('summary')->text() ?: $this->p('content')->text() );
+	}
+
 
 
 // Methods: CMS\Trait_Content_Metadata_* (charcoal-legacy-cms-meta)
