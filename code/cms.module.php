@@ -60,6 +60,10 @@ class CMS_Module extends Charcoal_Module
 		$section_id = filter_input(INPUT_GET, 'section_id', FILTER_SANITIZE_STRING);
 		$language   = filter_input(INPUT_GET, 'lang',       FILTER_SANITIZE_STRING);
 
+		if ( ! $language ) {
+			$language = filter_input(INPUT_POST, 'lang', FILTER_SANITIZE_STRING);
+		}
+
 		// Prepare default request options
 		self::parse_request( $options, $action, $section_id, $language );
 
