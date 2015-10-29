@@ -189,7 +189,7 @@ class CMS_Contact_Entry extends Charcoal_Object
 				'subject'          => $this->p('subject')->text(),
 
 				'category_name'    => $category->p('name')->text(),
-				'category_subject' => $category->p('subscription_email_subject')->text(),
+				'category_subject' => $category->p('confirmation_email_subject')->text(),
 
 				'base_url'         => Charcoal::$config['URL'],
 				'lang'             => _l()
