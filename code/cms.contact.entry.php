@@ -196,6 +196,7 @@ class CMS_Contact_Entry extends Charcoal_Object
 			[
 				'id'               => $this->id(),
 				'email'            => $this->p('email')->text(),
+				'telephone'        => $this->p('telephone')->text(),
 				'name_first'       => $this->p('name_first')->text(),
 				'name_last'        => $this->p('name_last')->text(),
 
