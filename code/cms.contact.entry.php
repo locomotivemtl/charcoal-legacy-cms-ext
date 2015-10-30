@@ -113,16 +113,19 @@ class CMS_Contact_Entry extends Charcoal_Object
 		// Need the category object
 		$category = $this->p('category')->as_object();
 
-		$template = $category->v('confirmation_email_template');
-		$subject  = $category->p('confirmation_email_subject')->text();
+		if ( ! $category->v('send_confirmation_email') ) {
+			// This category was configured to NOT send confirmation email
+			return false;
+		}
+
 		$from     = $category->p('confirmation_email_from')->text();
+		$subject  = $this->filter_subject( $category->p('confirmation_email_subject')->text(), 'confirmation');
+		$template = Charcoal::email_template( $category->v('confirmation_email_template') );
 
 		if (
-			! $category->v('send_confirmation_email') ||
 			! $template ||
 			! $subject
 		) {
-			// This category was configured to NOT send confirmation email
 			return false;
 		}
 
@@ -137,7 +140,7 @@ class CMS_Contact_Entry extends Charcoal_Object
 		$email           = new Charcoal_Email;
 		$email->to       = [ $this->v('email') ];
 		$email->subject  = $subject;
-		$email->msg_html = Charcoal::email_template($template);
+		$email->msg_html = $template;
 		$email->from     = $from;
 
 		$email->cc  = $category->v('confirmation_email_cc');
@@ -161,6 +164,19 @@ class CMS_Contact_Entry extends Charcoal_Object
 	 */
 	public function send_notification_email()
 	{
+	}
+
+	/**
+	 * Alter the confirmation email subject.
+	 *
+	 * @param string $subject The string to alter.
+	 * @param string $context Optional. How to filter the field.
+	 *
+	 * @return string
+	 */
+	public function filter_subject( $subject, $context = '' )
+	{
+		return $subject;
 	}
 
 	/**
