@@ -194,6 +194,7 @@ class CMS_Contact_Entry extends Charcoal_Object
 		$replacements = array_merge(
 			$this->_user_metadata_email_replacements(),
 			[
+				'id'               => $this->id(),
 				'email'            => $this->p('email')->text(),
 				'name_first'       => $this->p('name_first')->text(),
 				'name_last'        => $this->p('name_last')->text(),
