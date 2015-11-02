@@ -19,6 +19,10 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="HandheldFriendly" content="True">
+		{{# error_code }}
+		<meta name="robots" content="noindex">
+		{{/ error_code }}
+		{{^ error_code }}
 
 		{{> widget.cms.metadata }}
 
@@ -28,6 +32,7 @@
 		<link rel="alternate" hreflang="{{ locale }}" href="{{ full_url }}" title="{{ label_l7d }}">
 		{{/ all_translations }}
 
+		{{/ error_code }}
 		<?php echo Charcoal::get_js('head'); ?>
 		<?php echo Charcoal::get_css(); ?>
 

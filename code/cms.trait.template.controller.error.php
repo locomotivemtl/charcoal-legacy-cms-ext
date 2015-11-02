@@ -27,6 +27,16 @@ trait CMS_Trait_Template_Controller_Error
 	protected $_error_obj;
 
 	/**
+	 * {@inheritdoc}
+	 */
+	public function init()
+	{
+		$this->enqueue_assets();
+
+		return $this;
+	}
+
+	/**
 	 * Retrieve the error controller's code
 	 *
 	 * @return string

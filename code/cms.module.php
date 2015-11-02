@@ -137,18 +137,19 @@ class CMS_Module extends Charcoal_Module
 
 			$section = $section_loader->{ $section_id };
 
-			$tpl = Charcoal_Template::get($section->template);
+			$tpl  = Charcoal_Template::get($section->template);
+			$ctrl = $tpl->controller();
 
 			// Section is already loaded, let's tell the controller about it.
-			$tpl->controller()
-				->set_section($section)
-				->handle_request()
-				->enqueue_assets();
+			$ctrl->set_section($section)
+			     ->handle_request()
+			     ->enqueue_assets();
 
 			self::is_controller_loaded(true);
 
 			if ( ! $tpl->template() ) {
-				$tpl = Charcoal_Template::get(404);
+				$tpl  = Charcoal_Template::get(404);
+				$ctrl = $tpl->controller()->enqueue_assets();
 			}
 
 			echo $tpl->render();
