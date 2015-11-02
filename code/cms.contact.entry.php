@@ -57,25 +57,25 @@ class CMS_Contact_Entry extends Charcoal_Object
 	public $message;
 
 	/**
+	 * Entry Category
+	 *
+	 * @var CMS_Contact_Category
+	 */
+	protected $_category;
+
+	/**
 	 * {@inheritdoc}
 	 */
 	protected function pre_save( $properties = null )
 	{
 		$this->_pre_save_user_metadata();
 
-		if ( $this->category ) {
-			$category = Charcoal::obj('CMS_Contact_Category');
-			$category->load($this->category);
-
-			if ( ! $category->id() ) {
-				$this->category = null;
-			}
-
+		/*if ( $category = $this->category() ) {
 			// Set a local var that will be used in post save
-			/*if ( $category->send_confirmation_email && $category->confirmation_email_template ) {
+			if ( $category->send_confirmation_email && $category->confirmation_email_template ) {
 				$this->confirmation_email_template = $category->confirmation_email_template;
-			}*/
-		}
+			}
+		}*/
 
 		return parent::pre_save($properties);
 	}
@@ -95,37 +95,34 @@ class CMS_Contact_Entry extends Charcoal_Object
 	}
 
 	/**
+	 * Retrieve the current category
+	 *
+	 * @return CMS_Contact_Category
+	 */
+	public function category()
+	{
+		if ( ! isset( $this->_category ) ) {
+			$this->_category = $this->p('category')->as_object();
+
+			if ( ! $this->_category->id() ) {
+				$this->_category = null;
+			}
+		}
+
+		return $this->_category;
+	}
+
+	/**
 	 * Send an entry confirmation email to the inquirer.
 	 *
 	 * @return boolean TRUE if the email was successfully sent
 	 */
 	public function send_confirmation_email()
 	{
-		// If this entry is not associated to any category, there is not much one can do
-		if ( ! $this->category ) {
-			Charcoal::debug([
-				'msg' => 'A contact entry object was saved without a category. Impossible to send confirmation email.'
-			]);
+		$category = $this->category();
 
-			return false;
-		}
-
-		// Need the category object
-		$category = $this->p('category')->as_object();
-
-		if ( ! $category->v('send_confirmation_email') ) {
+		if ( ! $category || ! $category->v('send_confirmation_email') ) {
 			// This category was configured to NOT send confirmation email
-			return false;
-		}
-
-		$from     = $category->p('confirmation_email_from')->text();
-		$subject  = $this->filter_subject( $category->p('confirmation_email_subject')->text(), 'confirmation');
-		$template = Charcoal::email_template( $category->v('confirmation_email_template') );
-
-		if (
-			! $template ||
-			! $subject
-		) {
 			return false;
 		}
 
@@ -137,16 +134,16 @@ class CMS_Contact_Entry extends Charcoal_Object
 		$l = Charcoal_L10n::get();
 		$l->set_lang( $this->user_lang );
 
+		$tpl = Charcoal_Template::get( $category->v('confirmation_email_template') );
+		$tpl->controller()->set_context( $this );
+
 		$email           = new Charcoal_Email;
 		$email->to       = [ $this->v('email') ];
-		$email->subject  = $subject;
-		$email->msg_html = $template;
-		$email->from     = $from;
-
-		$email->cc  = $category->v('confirmation_email_cc');
-		$email->bcc = $category->v('confirmation_email_bcc');
-
-		$email->replacements = $this->_confirmation_email_replacements();
+		$email->subject  = $category->p('confirmation_email_subject')->text();
+		$email->msg_html = $tpl->render();
+		$email->from     = $category->p('confirmation_email_from')->text();
+		$email->cc       = $category->v('confirmation_email_cc');
+		$email->bcc      = $category->v('confirmation_email_bcc');
 
 		// Send email
 		$response = $email->send();
@@ -164,19 +161,6 @@ class CMS_Contact_Entry extends Charcoal_Object
 	 */
 	public function send_notification_email()
 	{
-	}
-
-	/**
-	 * Alter the confirmation email subject.
-	 *
-	 * @param string $subject The string to alter.
-	 * @param string $context Optional. How to filter the field.
-	 *
-	 * @return string
-	 */
-	public function filter_subject( $subject, $context = '' )
-	{
-		return $subject;
 	}
 
 	/**
