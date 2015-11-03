@@ -34,16 +34,6 @@ trait CMS_Trait_Template_Controller_404
 	 */
 	public function mailto()
 	{
-		_a( '404-subject', [
-			'en' => 'Page not found on %s',
-			'fr' => 'Page non trouvée sur %s'
-		] );
-
-		_a( '404-body', [
-			'en' => 'The following page may have moved or is no longer available: %s',
-			'fr' => 'La page suivante est peut-être déplacé ou n’est plus disponible : %s'
-		] );
-
 		$email = $this->cfg()->p('contact_email')->text();
 
 		if ( $email ) {

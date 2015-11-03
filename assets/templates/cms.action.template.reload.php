@@ -36,7 +36,7 @@ $template = filter_input(INPUT_POST, 'template', FILTER_SANITIZE_STRING);
 // ==========================================================================
 
 if ( ! Charcoal::token_validate( $token, sprintf( CMS_Section::NONCE_TOKEN, $template ) ) ) {
-	$response['message'] = _t('Your session has expired.');
+	$response['message'] = _t('session-expired');
 }
 else {
 
@@ -46,7 +46,7 @@ else {
 	$template_obj = Charcoal::obj('CMS_Template')->load( $template );
 
 	if ( ! $template_obj->id() ) {
-		$response['message'] = _t('The template does not exist.');
+		$response['message'] = _t('template-missing');
 	}
 	else {
 
