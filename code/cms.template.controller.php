@@ -576,10 +576,12 @@ class CMS_Template_Controller extends Charcoal_Template_Controller
 			$translations[ $code ] = [
 				'is_current' => ( _l() === $code ),
 				'code'       => $code,
+				'localized'  => [
+					'abbr'   => '<abbr title="' . $label_l7d . '">' . $abbr_l7d . '</abbr>',
+					'label'  => $label_l7d
+				],
 				'abbr'       => '<abbr title="' . $label . '">' . $abbr . '</abbr>',
-				'abbr_l7d'   => '<abbr title="' . $label_l7d . '">' . $abbr_l7d . '</abbr>',
 				'label'      => $label,
-				'label_l7d'  => $label_l7d,
 				'locale'     => $locale,
 				'hreflang'   => ( $locale ? ' hreflang="' . $locale . '"' : false ),
 				'href'       => ' href="' . $url . '"',

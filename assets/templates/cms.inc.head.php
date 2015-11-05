@@ -29,7 +29,7 @@
 		<link rel="canonical" href="{{ current_url }}">
 
 		{{# all_translations }}
-		<link rel="alternate" hreflang="{{ locale }}" href="{{ full_url }}" title="{{ label_l7d }}">
+		<link rel="alternate" hreflang="{{ locale }}" href="{{ full_url }}" title="{{ localized.label }}">
 		{{/ all_translations }}
 
 		{{/ error_code }}
