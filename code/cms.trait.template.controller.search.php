@@ -158,11 +158,11 @@ trait CMS_Trait_Template_Controller_Search
 		if ( $escaped ) {
 			if ( is_array( $query ) ) {
 				foreach ( $query as &$q ) {
-					$q = htmlspecialchars( $q, ENT_QUOTES );
+					$q = htmlspecialchars( $q, ENT_QUOTES, ini_get('default_charset'), false );
 				}
 			}
 			else {
-				$query = htmlspecialchars( $query, ENT_QUOTES );
+				$query = htmlspecialchars( $query, ENT_QUOTES, ini_get('default_charset'), false );
 			}
 		}
 
