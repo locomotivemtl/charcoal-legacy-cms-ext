@@ -137,6 +137,14 @@ class CMS_Module extends Charcoal_Module
 
 			$section = $section_loader->{ $section_id };
 
+			// Determine if section provides an external URL; if so, redirect.
+			$external_url = l10n($section->v('external_url'));
+
+			if ( $external_url ) {
+				header('Location: ' . $external_url, true, 303);
+				exit;
+			}
+
 			$tpl  = Charcoal_Template::get($section->template);
 			$ctrl = $tpl->controller();
 
