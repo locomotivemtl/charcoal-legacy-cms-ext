@@ -41,4 +41,4 @@
 		{{> widget.cms.google_analytics }}
 		{{/ filter_document_head }}
 	</head>
-	<body{{&html_class.body}}>
+	<body{{&html_class.body}} data-template="{{ template_ident }}">

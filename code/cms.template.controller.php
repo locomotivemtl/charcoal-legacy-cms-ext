@@ -146,6 +146,20 @@ class CMS_Template_Controller extends Charcoal_Template_Controller
 	}
 
 	/**
+	 * Retrieve the template identifier
+	 *
+	 * @return string
+	 */
+	public function template_ident()
+	{
+		$ident = $this->parent_template()->ident();
+		$ident = preg_replace( '#^' . $this->module() . '\b#', '', $ident );
+		$ident = trim( $ident, '.-' );
+
+		return $ident;
+	}
+
+	/**
 	 * Reset the product iteration pointer
 	 *
 	 * @return $this
