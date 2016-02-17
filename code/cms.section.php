@@ -13,13 +13,21 @@
 
 use \Charcoal as Charcoal;
 
-use \CMS\Trait_Url_Slug                       as Trait_Url_Slug;
-use \CMS\Interface_Content_Metadata_OpenGraph as Interface_Metadata_OpenGraph;
-use \CMS\Trait_Content_Metadata_OpenGraph     as Trait_Metadata_OpenGraph;
+use \Charcoal\Trait_Category;
+use \Charcoal\Trait_Category_Item;
+use \Charcoal\Trait_Hierarchy;
+use \Charcoal\Trait_Url;
+
+use \CMS\Trait_Menu_Aware;
+use \CMS\Trait_Url_Slug;
+
 use \CMS\Interface_Content_Metadata_Basic     as Interface_Metadata_Basic;
-use \CMS\Trait_Content_Metadata_Basic         as Trait_Metadata_Basic;
 use \CMS\Interface_Content_Metadata_Keywords  as Interface_Metadata_Keywords;
+use \CMS\Interface_Content_Metadata_OpenGraph as Interface_Metadata_OpenGraph;
+
+use \CMS\Trait_Content_Metadata_Basic         as Trait_Metadata_Basic;
 use \CMS\Trait_Content_Metadata_Keywords      as Trait_Metadata_Keywords;
+use \CMS\Trait_Content_Metadata_OpenGraph     as Trait_Metadata_OpenGraph;
 
 /**
  * Class: CMS Section
@@ -54,6 +62,13 @@ use \CMS\Trait_Content_Metadata_Keywords      as Trait_Metadata_Keywords;
  * Charcoal Properties:
  *
  * - $slug
+ *
+ * #### Trait_Menu_Aware
+ *
+ * Charcoal Properties:
+ *
+ * - $menu_label
+ * - $menu_location
  *
  * #### Trait_Hierarchy
  *
@@ -97,16 +112,17 @@ class CMS_Section extends Charcoal_Object implements
 	Interface_Metadata_Keywords,
 	Interface_Metadata_OpenGraph
 {
-	use Charcoal\Trait_Category,
-		Charcoal\Trait_Category_Item,
-		Charcoal\Trait_Hierarchy,
-		Charcoal\Trait_Url,
+	use Trait_Category,
+		Trait_Category_Item,
+		Trait_Hierarchy,
+		Trait_Url,
 		CMS_Trait_Template,
 		Trait_Url_Slug,
+		Trait_Menu_Aware,
 		Trait_Metadata_Basic,
 		Trait_Metadata_Keywords,
 		Trait_Metadata_OpenGraph {
-			Charcoal\Trait_Url::url as _url;
+			Trait_Url::url as _url;
 		}
 
 // Properties

@@ -1,0 +1,52 @@
+{
+  "properties": {
+    "menu_label": {
+      "type": "string",
+      "l10n": true,
+      "label": {
+        "en": "Navigation Label",
+        "fr": "Titre de la navigation"
+      }
+    },
+    "menu_location": {
+      "active": false,
+      "type": "choice",
+      "l10n": true,
+      "label": {
+        "en": "Navigation Menu Locations",
+        "fr": "Emplacements de menu de navigation"
+      },
+      "choices": {
+        "site-header": {
+          "en": "Site Header",
+          "fr": "En-tête du site"
+        },
+        "site-footer": {
+          "en": "Site Footer",
+          "fr": "Pied du site"
+        }
+      }
+    }
+  },
+
+  "forms": {
+    "admin": {
+      "groups": {
+        "menu": {
+          "label": {
+            "en": "Nevigation Menu",
+            "fr": "Menu de navigation"
+          },
+          "l10n": true,
+          "l10n_options": {
+            "mode": "loop_group"
+          },
+          "properties": [
+            "menu_label",
+            "menu_location"
+          ]
+        }
+      }
+    }
+  }
+}

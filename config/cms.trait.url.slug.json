@@ -1,16 +1,4 @@
 {
-  "config_type": "object",
-  "config_version": 1,
-
-  "module": "cms",
-
-  "name": {
-    "en": "Site Section",
-    "fr": "Section de site"
-  },
-
-  "revision": true,
-
   "properties": {
     "slug": {
       "type": "string",

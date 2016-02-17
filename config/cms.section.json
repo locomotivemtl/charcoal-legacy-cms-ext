@@ -341,6 +341,9 @@
           },
           "priority": 30
         },
+        "menu": {
+          "active": false
+        },
         "url": {
           "label": {
             "en": "URL Information",
@@ -352,7 +355,8 @@
           },
           "properties": [
             "slug",
-            "external_url"
+            "external_url",
+            "menu_label"
           ],
           "priority": 40
         },
