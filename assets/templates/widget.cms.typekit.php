@@ -9,5 +9,5 @@
 }}
 {{# cfg.typekit }}
 <script src="//use.typekit.net/{{ cfg.typekit }}.js"></script>
-<script>try{Typekit.load();}catch(e){}</script>
+<script>try{Typekit.load({ async: true });}catch(e){}</script>
 {{/ cfg.typekit }}
