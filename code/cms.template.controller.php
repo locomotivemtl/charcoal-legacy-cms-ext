@@ -490,64 +490,6 @@ class CMS_Template_Controller extends Charcoal_Template_Controller
 	}
 
 	/**
-	 * Asset Getters
-	 *
-	 * Retrieve an asset, if it exists, of a specified type.
-	 *
-	 * ## Usage
-	 *
-	 * #### With Mustache
-	 *
-	 * ```mustache
-	 * {{#assets.images}}test.png{{/assets.images}}
-	 * ```
-	 *
-	 * ## Asset Types
-	 *
-	 * - Images
-	 * - Styles
-	 * - Scripts
-	 * - Fonts
-	 * - Files
-	 *
-	 * @see Charcoal\Asset For details on how assets are loaded relative to the filesystem.
-	 *
-	 * @param string $asset_mode Optional. An allowed Charcoal\Asset mode. Defaults to "url".
-	 *
-	 * @return Closure[] {
-	 *     Returns an associative array of Closures that create a new instance
-	 *     of Charcoal\Asset with the desired $file.
-	 *
-	 *     @type string                $file   The base file name and extension to lookup.
-	 *     @type Mustache_LambdaHelper $lambda An instance of the Mustache LambdaHelper object.
-	 *
-	 *     @return Charcoal\Asset|string Returns a value based on $asset_mode or FALSE if it doesn't exist.
-	 * }
-	 */
-	public function assets( $asset_mode = 'url' )
-	{
-		$lambdas = [
-			'images'  => function ( $file, Mustache_LambdaHelper $lambda ) use ( $asset_mode ) {
-				return new Charcoal\Asset('images', $lambda->render($file), $asset_mode);
-			},
-			'styles'  => function ( $file, Mustache_LambdaHelper $lambda ) use ( $asset_mode ) {
-				return new Charcoal\Asset('styles', $lambda->render($file), $asset_mode);
-			},
-			'scripts' => function ( $file, Mustache_LambdaHelper $lambda ) use ( $asset_mode ) {
-				return new Charcoal\Asset('scripts', $lambda->render($file), $asset_mode);
-			},
-			'fonts'   => function ( $file, Mustache_LambdaHelper $lambda ) use ( $asset_mode ) {
-				return new Charcoal\Asset('fonts', $lambda->render($file), $asset_mode);
-			},
-			'files'   => function ( $file, Mustache_LambdaHelper $lambda ) use ( $asset_mode ) {
-				return new Charcoal\Asset('files', $lambda->render($file), $asset_mode);
-			}
-		];
-
-		return $lambdas;
-	}
-
-	/**
 	 * Retrieve a utility for interacting with the context's translations, if any.
 	 *
 	 * @param bool $include_self Optional
