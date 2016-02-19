@@ -18,6 +18,20 @@
 class Property_CMS_Template_Options extends Property_Json
 {
 	/**
+	 * Store of imported template and view controller properties.
+	 *
+	 * @var array
+	 */
+	private $template_options = [];
+
+	/**
+	 * Whether the property has imported the template's and view controller's properties.
+	 *
+	 * @var boolean
+	 */
+	private $loaded_template_options = false;
+
+	/**
 	 * {@inheritdoc}
 	 *
 	 * It's at this moment the property meets its maker.
@@ -34,18 +48,37 @@ class Property_CMS_Template_Options extends Property_Json
 	/**
 	 * Import the template properties from the current template.
 	 *
+	 * @return array
+	 */
+	public function template_config()
+	{
+		if ( ! isset($this->template_options) ) {
+			$this->load_template_config();
+		}
+
+		return $this->template_options;
+	}
+
+	/**
+	 * Import the template properties from the current template.
+	 *
 	 * @return $this
 	 */
 	protected function load_template_config()
 	{
-		$obj  = $this->obj();
-		$prop = $obj->p('template');
+		$obj = $this->obj();
 
-		if ( $prop && ( $template = $prop->val() ) ) {
-			$tpl  = Charcoal::obj('CMS_Template')->load( $template );
+		if (
+			$obj->template &&
+			! $this->loaded_template_options &&
+			class_exists('Property_Structure')
+		) {
+			$this->loaded_template_options = true;
+
+			$tpl  = Charcoal::obj('CMS_Template')->load( $obj->template );
 			$prop = $tpl->p('template_config');
 
-			$view = Charcoal_Template::get( $template );
+			$view = Charcoal_Template::get( $obj->template );
 			$ctrl = $view->controller();
 
 			$template_classes = $this->filter_template_classes(
@@ -57,10 +90,10 @@ class Property_CMS_Template_Options extends Property_Json
 			$default_classes  = $this->get_ignored_template_classes();
 
 			foreach	( $template_classes as $class ) {
-				$class_name = ( get_class( $class ) ?: $class );
+				$class_name = ( is_object($class) ? get_class($class) : $class );
 
 				if ( ! in_array( $class_name, $default_classes ) ) {
-					$config = ( $class instanceof Property_JSON ? $class->as_array() : $this->load_config( $class_name ) );
+					$config = ( $class instanceof Property_JSON ? $class->entries() : $this->load_config( $class_name ) );
 					$data   = ( empty( $config['data'] ) ? [] : $config['data'] );
 
 					if ( ! empty( $config['properties'] ) ) {
@@ -72,6 +105,8 @@ class Property_CMS_Template_Options extends Property_Json
 					}
 				}
 			}
+
+			$this->template_options = $this->structured_data();
 		}
 
 		return $this;

@@ -41,13 +41,21 @@ trait CMS_Trait_Template
 	public $template_options;
 
 	/**
+	 * Whether the "template_options" property has imported the
+	 * template's and view controller's properties.
+	 *
+	 * @var boolean
+	 */
+	private $loaded_template_options = false;
+
+	/**
 	 * Generate a "nonce" token.
 	 *
 	 * @return string
 	 */
 	public static function get_token()
 	{
-		return Charcoal::token('pg-template_options');
+		return Charcoal::token($this->obj_type() . '-' . 'template_options');
 	}
 
 	/**
@@ -58,5 +66,41 @@ trait CMS_Trait_Template
 	public function get_template_reload_action()
 	{
 		return 'cms.action.template.reload';
+	}
+
+	/**
+	 * {@inheritdoc}
+	 *
+	 * Alter the object config to inject the template's properties.
+	 *
+	 * @return Charcoal_Config
+	 */
+	public function config()
+	{
+		$obj_config  = parent::config();
+
+		if (
+			$this->template &&
+			! $this->loaded_template_options &&
+			class_exists('Property_Structure')
+		) {
+			$this->loaded_template_options = true;
+
+			$properties   = $obj_config['properties'];
+			$struct_prop  = $this->p('template_options');
+			$struct_extra = $struct_prop->template_config();
+
+			if ( ! empty($struct_extra) ) {
+				$struct_config = array_merge($properties['template_options'], $struct_extra);
+
+				$properties['template_options'] = $struct_config;
+
+				$obj_config['properties'] = $properties;
+
+				self::$_config[ $this->obj_type() ] = $obj_config;
+			}
+		}
+
+		return $obj_config;
 	}
 }
