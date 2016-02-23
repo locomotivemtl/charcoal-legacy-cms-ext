@@ -1,63 +1,63 @@
 {
   "properties": {
-    "signature_text": {
-      "type": "string",
-      "l10n": true,
+    "signature": {
+      "type": "json",
       "label": {
-        "en": "Signature Text",
-        "fr": "Texte de la signature"
-      }
-    },
-    "signature_title": {
-      "type": "string",
-      "l10n": true,
-      "label": {
-        "en": "Signature Title",
-        "fr": "Titre de la signature"
+        "en": "Agency Signature",
+        "fr": "Signature d'Agence"
       },
-      "description": {
-        "en": "This is mainly used for SEO purpose.",
-        "fr": "Le titre est principalement utilisé à des fins de référencement / SEO."
-      }
-    },
-    "signature_url": {
-      "type": "url",
-      "l10n": true,
-      "label": {
-        "en": "Signature URL",
-        "fr": "Lien de la signature"
+      "input_type": "form",
+      "-l10n_options": {
+        "mode": "loop_group"
+      },
+      "fields_accepted": "available",
+      "fields_available": {
+        "text": {
+          "type": "string",
+          "l10n": true,
+          "label": {
+            "en": "Signature Text",
+            "fr": "Texte de la signature"
+          }
+        },
+        "title": {
+          "type": "string",
+          "l10n": true,
+          "label": {
+            "en": "Signature Title",
+            "fr": "Titre de la signature"
+          },
+          "description": {
+            "en": "This is mainly used for SEO purpose.",
+            "fr": "Le titre est principalement utilisé à des fins de référencement / SEO."
+          }
+        },
+        "url": {
+          "type": "url",
+          "l10n": true,
+          "label": {
+            "en": "Signature URL",
+            "fr": "Lien de la signature"
+          }
+        }
       }
     }
   },
 
   "data": {
-    "signature_title": "Locomotive",
-    "signature_text": {
-      "en": "Why Locomotive ?",
-      "fr": "Pourquoi Locomotive ?"
-    },
-    "signature_url": {
-      "en": "http://locomotive.ca/en/",
-      "fr": "http://locomotive.ca/fr/"
-    }
+    "signature": "[{\"title\": \"Locomotive\",\"text\": {\"en\": \"Why Locomotive ?\",\"fr\": \"Pourquoi Locomotive ?\"},\"url\": {\"en\": \"http://locomotive.ca/en/\",\"fr\": \"http://locomotive.ca/fr/\"}}]"
   },
 
   "forms": {
     "admin": {
       "groups": {
-        "signature": {
+        "meta-signature": {
           "label": {
             "en": "Agency Signature",
             "fr": "Signature d'Agence"
           },
-          "l10n": true,
-          "l10n_options": {
-            "mode": "loop_group"
-          },
           "properties": [
-            "signature_text",
-            "signature_url",
-            "signature_title"
+            "signature"
           ],
           "priority": 200
         }

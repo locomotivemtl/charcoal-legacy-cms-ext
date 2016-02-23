@@ -13,6 +13,8 @@
 
 namespace CMS;
 
+use \Charcoal_Template;
+
 /**
  * Trait: Agency Signature
  *
@@ -20,43 +22,42 @@ namespace CMS;
  */
 trait Trait_Signature
 {
-    /**
-     * For metadata usage, represents advisory information
-     * related to the signature.
-     *
-     * @var string $signature_title
-     * @see Property_Text
-     */
-    public $signature_title;
+	/**
+	 * The agency's information.
+	 *
+	 * @var mixed[] {
+	 *     @var string $title For metadata usage, represents advisory information
+	 *                        related to the signature.
+	 *     @var string $text  Publicly displayed content of the signature.
+	 *     @var string $url   URL to the signature defining a hypertext link.
+	 * }
+	 * @see Property_JSON
+	 */
+	public $signature;
 
-    /**
-     * Publicly displayed content of the signature.
-     *
-     * @var string $signature_text
-     * @see Property_Text
-     */
-    public $signature_text;
+	/**
+	 * Render the agency's signature.
+	 *
+	 * @return string
+	 */
+	public function made_by()
+	{
+		$prop = $this->p('signature');
 
-    /**
-     * URL to the signature defining a hypertext link.
-     *
-     * @var string $signature_url
-     * @see Property_Url
-     */
-    public $signature_url;
+		if ( $prop && is_a($prop, 'Property_Structure') ) {
+			$entry = $prop->as_charcoal_properties();
 
-    /**
-     * Render the agency's signature.
-     *
-     * @return string
-     */
-    public function made_by()
-    {
-        $replacements = [ 'obj' => $this ];
+			if ( is_array($entry) || is_a($entry, 'Traversable') ) {
+				$entry = reset($entry);
+			}
 
-        $tpl = \Charcoal_Template::get( 'signature', $replacements );
-        $tpl->set_template('<a target="_blank" href="{{obj.p.signature_url}}">{{&obj.p.signature_text}}</a>');
+			$tpl = Charcoal_Template::get( 'signature', [ 'signature' => $entry ] );
 
-        return $tpl->render();
-    }
+			$tpl->set_template('<a target="_blank" href="{{ signature.url }}" title="{{ signature.title }}">{{& signature.text }}</a>');
+
+			return $tpl->render();
+		}
+
+		return '';
+	}
 }
