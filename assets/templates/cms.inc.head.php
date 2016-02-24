@@ -8,8 +8,7 @@
 	@since   2015-05-04
 }}
 <!DOCTYPE html>
-<!--[if lte IE 9]>    <html lang="{{ lang }}"{{# html_class.root }}lt-ie10{{/ html_class.root }}> <![endif]-->
-<!--[if gt IE 9]><!--><html lang="{{ lang }}"{{&html_class.root}}><!--<![endif]-->
+<html lang="{{ lang }}"{{& root_class.attr }}>
 	<head>
 		<meta charset="UTF-8">
 
@@ -39,4 +38,4 @@
 
 		{{> widget.cms.google_analytics }}
 	</head>
-	<body{{&html_class.body}} data-template="{{ template_ident }}">
+	<body{{& body_class.attr }} data-template="{{ template_ident }}">

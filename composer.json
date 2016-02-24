@@ -17,6 +17,7 @@
   ],
   "require": {
     "php": ">=5.4.0",
+    "mcaskill/tokenlist": "@dev",
     "locomotivemtl/charcoal-composer-installer": "@dev",
     "locomotivemtl/charcoal-cms-meta": "@dev"
   },
@@ -28,6 +29,10 @@
     {
       "type": "vcs",
       "url": "https://github.com/locomotivemtl/charcoal-legacy-cms-meta"
+    },
+    {
+      "type": "vcs",
+      "url": "https://github.com/mcaskill/tokenlist"
     }
   ],
   "autoload": {
