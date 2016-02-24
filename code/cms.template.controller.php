@@ -267,6 +267,23 @@ class CMS_Template_Controller extends Charcoal_Template_Controller
 	}
 
 	/**
+	 * Retrieve the context's first dataset of template options.
+	 *
+	 * @uses self::get_template_options()
+	 *
+	 * @param bool $reload Optional. Reload the template options from the context.
+	 *
+	 * @return mixed
+	 */
+	public function get_first_template_options( $reload = false )
+	{
+		$options = $this->get_template_options($reload);
+		$options = reset($options);
+
+		return $options;
+	}
+
+	/**
 	 * Retrieve the desired context for template options.
 	 *
 	 * If the {@see self::context()} isn't a Charcoal Object with a "template_options" property,
