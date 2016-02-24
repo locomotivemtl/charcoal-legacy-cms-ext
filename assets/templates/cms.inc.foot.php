@@ -8,11 +8,7 @@
 	@since   2015-05-04
 }}
 
-		{{# filter_document_foot }}<?php
-
-			echo Charcoal::get_js();
-
-		?>{{/ filter_document_foot }}
+		<?php echo Charcoal::get_js(); ?>
 
     </body>
 </html>

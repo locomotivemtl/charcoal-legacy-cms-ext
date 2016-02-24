@@ -73,20 +73,6 @@ class CMS_Template_Controller extends Charcoal_Template_Controller
 	protected $_widgets_loader;
 
 	/**
-	 * Keep track of the current Mustache context
-	 *
-	 * @var string
-	 */
-	private static $__mustache_scope = null;
-
-	/**
-	 * Keep track of the last Mustache context
-	 *
-	 * @var string
-	 */
-	private static $__last_mustache_scope;
-
-	/**
 	 * Default values for array tracking.
 	 *
 	 * @var (string|int)[]
@@ -157,47 +143,6 @@ class CMS_Template_Controller extends Charcoal_Template_Controller
 		$ident = trim( $ident, '.-' );
 
 		return $ident;
-	}
-
-	/**
-	 * Reset the product iteration pointer
-	 *
-	 * @return $this
-	 */
-	protected function reset_mustache_scope()
-	{
-		self::$__mustache_scope = ( self::$__last_mustache_scope ?: null );
-
-		return $this;
-	}
-
-	/**
-	 * Set a label for the current Mustache rendering context.
-	 *
-	 * Useful for instances of `Charcoal_Template_Controller` when
-	 * wanting to alter their output based on where it's rendering.*
-	 *
-	 * @param string|int $scope
-	 *
-	 * @return $this
-	 */
-	protected function set_mustache_scope( $scope = null )
-	{
-		self::$__last_mustache_scope = self::$__mustache_scope;
-
-		self::$__mustache_scope = $scope;
-
-		return $this;
-	}
-
-	/**
-	 * Get the current Mustache rendering context.
-	 *
-	 * @return string|int
-	 */
-	protected function get_mustache_scope()
-	{
-		return self::$_mustache_scope;
 	}
 
 	/**
@@ -589,72 +534,6 @@ class CMS_Template_Controller extends Charcoal_Template_Controller
 	{
 		return function ( $text, Mustache_LambdaHelper $lambda ) {
 			return $lambda->render( $text );
-		};
-	}
-
-	/**
-	 * Output additional data in the `<head>` of the HTML document.
-	 *
-	 * This method is meant to be reimplemented in a child template controller.
-	 *
-	 * @see cms/assets/templates/cms.inc.head.php
-	 *
-	 * @param string|string[] $output Optional. Additional data to output in the `<head>` element.
-	 * @param bool            $after  Optional. Wether to output the extra data before or after default data.
-	 *
-	 * @return Closure {
-	 *     Returns a Closure that can alter the default JS operations..
-	 *
-	 *     @type string                $text   The contents of the `<head>` element from the template.
-	 *     @type Mustache_LambdaHelper $lambda An instance of the Mustache LambdaHelper object.
-	 *
-	 *     @uses string|string[]       $output Optional. Additional data to output in the `<head>` element.
-	 *     @uses bool                  $after  Optional. Wether to output the extra data before or after default data.
-	 *
-	 *     @return string
-	 * }
-	 */
-	public function filter_document_head( $output = '', $after = true )
-	{
-		return function ( $text, Mustache_LambdaHelper $lambda ) use ( $output, $after ) {
-			if ( is_array( $output ) ) {
-				# $text = explode("\n", preg_replace('#^\t+#m', '', $text));
-				$output = implode("\n\t\t", $output);
-			}
-
-			return $lambda->render( $after ? $text . $output : $output . $text );
-		};
-	}
-
-	/**
-	 * Output additional data before the closing `</body>` tag of the HTML document.
-	 *
-	 * @see cms/assets/templates/cms.inc.foot.php
-	 *
-	 * @param string|string[] $output Optional. Additional data to output before the closing `</body>` element.
-	 * @param bool            $after  Optional. Wether to output the extra data before or after default data.
-	 *
-	 * @return Closure {
-	 *     Returns a Closure that can alter the default JS operations..
-	 *
-	 *     @type string                $text   The contents of the `<head>` element from the template.
-	 *     @type Mustache_LambdaHelper $lambda An instance of the Mustache LambdaHelper object.
-	 *
-	 *     @uses string|string[]       $output Optional. Additional data to output before the closing `</body>` element.
-	 *     @uses bool                  $after  Optional. Wether to output the extra data before or after default data.
-	 *
-	 *     @return string
-	 * }
-	 */
-	public function filter_document_foot( $output = '', $after = false )
-	{
-		return function ( $text, Mustache_LambdaHelper $lambda ) use ( $output, $after ) {
-			if ( is_array( $output ) ) {
-				# $text = explode("\n", preg_replace('#^\t+#m', '', $text));
-				$output = implode("\n\t\t", $output);
-			}
-
-			return $lambda->render( $after ? $text . $output : $output . $text );
 		};
 	}
 
