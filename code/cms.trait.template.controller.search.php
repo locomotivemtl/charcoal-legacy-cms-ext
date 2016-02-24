@@ -81,7 +81,7 @@ trait CMS_Trait_Template_Controller_Search
 
 		$this->log_query();
 
-		return $this;
+		return parent::resolve_request();
 	}
 
 	/**
