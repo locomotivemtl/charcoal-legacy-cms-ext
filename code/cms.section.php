@@ -11,23 +11,14 @@
  * @since      Version 2015-08-18
  */
 
-use \Charcoal as Charcoal;
-
+// Depdencies from Core Legacy
 use \Charcoal\Trait_Category;
 use \Charcoal\Trait_Category_Item;
 use \Charcoal\Trait_Hierarchy;
 use \Charcoal\Trait_Url;
 
+// Local Depdencies
 use \CMS\Trait_Menu_Aware;
-use \CMS\Trait_Url_Slug;
-
-use \CMS\Interface_Content_Metadata_Basic     as Interface_Metadata_Basic;
-use \CMS\Interface_Content_Metadata_Keywords  as Interface_Metadata_Keywords;
-use \CMS\Interface_Content_Metadata_OpenGraph as Interface_Metadata_OpenGraph;
-
-use \CMS\Trait_Content_Metadata_Basic         as Trait_Metadata_Basic;
-use \CMS\Trait_Content_Metadata_Keywords      as Trait_Metadata_Keywords;
-use \CMS\Trait_Content_Metadata_OpenGraph     as Trait_Metadata_OpenGraph;
 
 /**
  * Class: CMS Section
@@ -90,7 +81,7 @@ use \CMS\Trait_Content_Metadata_OpenGraph     as Trait_Metadata_OpenGraph;
  *
  * - $category (disabled)
  *
- * #### Trait_Metadata_Basic
+ * #### \CMS\Trait_Content_Metadata_Basic
  *
  * Charcoal Properties:
  *
@@ -98,7 +89,7 @@ use \CMS\Trait_Content_Metadata_OpenGraph     as Trait_Metadata_OpenGraph;
  * - $meta_description
  * - $meta_keywords
  *
- * #### Trait_Metadata_OpenGraph
+ * #### \CMS\Trait_Content_Metadata_OpenGraph
  *
  * Charcoal Properties:
  *
@@ -107,21 +98,13 @@ use \CMS\Trait_Content_Metadata_OpenGraph     as Trait_Metadata_OpenGraph;
  *
  * @package CMS\Objects
  */
-class CMS_Section extends Charcoal_Object implements
-	Interface_Metadata_Basic,
-	Interface_Metadata_Keywords,
-	Interface_Metadata_OpenGraph
-{
-	use Trait_Category,
+class CMS_Section extends CMS_Object_URI {
+	use Trait_Url,
+		Trait_Category,
 		Trait_Category_Item,
 		Trait_Hierarchy,
-		Trait_Url,
-		CMS_Trait_Template,
-		Trait_Url_Slug,
 		Trait_Menu_Aware,
-		Trait_Metadata_Basic,
-		Trait_Metadata_Keywords,
-		Trait_Metadata_OpenGraph {
+		CMS_Trait_Template {
 			Trait_Url::url as _url;
 		}
 
@@ -347,7 +330,6 @@ class CMS_Section extends Charcoal_Object implements
 	protected function pre_save( $properties = null )
 	{
 		$this->filter_unique_ident('save');
-		$this->filter_unique_slug('save');
 
 		return parent::pre_save($properties);
 	}
@@ -358,7 +340,6 @@ class CMS_Section extends Charcoal_Object implements
 	protected function pre_update()
 	{
 		$this->filter_unique_ident('update');
-		$this->filter_unique_slug('update');
 
 		return parent::pre_update();
 	}
@@ -386,11 +367,10 @@ class CMS_Section extends Charcoal_Object implements
 	 * Retrieve the object's title—as it should appear
 	 * in the graph—for the "og:title" meta-property.
 	 *
-	 * @see Interface_Metadata_Basic
+	 * @see \CMS\Interface_Content_Metadata_Basic
 	 *
 	 * @return string
 	 */
-
 	public function meta_title()
 	{
 		return ( $this->p('meta_title')->text() ?: $this->p('title')->text() );
@@ -399,26 +379,12 @@ class CMS_Section extends Charcoal_Object implements
 	/**
 	 * Retrieve the document's description.
 	 *
-	 * @see Interface_Metadata_Basic
+	 * @see \CMS\Interface_Content_Metadata_Basic
 	 *
 	 * @return string
 	 */
-
 	public function meta_description()
 	{
 		return trim_words( $this->p('meta_description')->text() ?: $this->p('summary')->text() );
-	}
-
-	/**
-	 * Retrieve the name of the web site
-	 * upon which the object resides.
-	 *
-	 * @see Interface_Metadata_OpenGraph
-	 *
-	 * @return string
-	 */
-
-	public function meta_site_name() {
-		return CMS_Config::get_latest()->meta_site_name();
 	}
 }
