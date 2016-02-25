@@ -19,23 +19,16 @@
         "fr": "Catégorie"
       }
     },
+    "name": {
+      "active": true,
+      "required": true
+    },
     "email": {
       "active": true,
       "required": true
     },
     "telephone": {
       "active": true
-    },
-    "name": {
-      "active": false
-    },
-    "name_first": {
-      "active": true,
-      "required": true
-    },
-    "name_last": {
-      "active": true,
-      "required": true
     },
     "subject": {
       "type": "string",
