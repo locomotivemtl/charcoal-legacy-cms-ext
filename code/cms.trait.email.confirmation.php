@@ -147,13 +147,13 @@ trait CMS_Trait_Email_Confirmation
 			'email' => $this->p('email')->text()
 		];
 
-		if ( $name_first && $name_last ) {
+		if ( ( $name_first && $name_first->active() ) && ( $name_last && $name_last->active() ) ) {
 			$arr['name'] = sprintf(
 				'%1$s %2$s',
 				$name_first->text(),
 				$name_last->text()
 			);
-		} elseif ( $name_full ) {
+		} elseif ( $name_full && $name_full->active() ) {
 			$arr['name'] = $name_full->text();
 		}
 
