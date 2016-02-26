@@ -27,9 +27,9 @@ use \Charcoal as Charcoal;
  */
 class CMS_Contact_Entry extends Charcoal_Object
 {
-	use // CMS_Trait_User_Stats,
-		Core_Trait_User_Identity,
+	use Core_Trait_User_Identity,
 		Core_Trait_User_Organization,
+		// CMS_Trait_User_Stats,
 		Core_Trait_User_Metadata;
 
 	/**
@@ -64,6 +64,13 @@ class CMS_Contact_Entry extends Charcoal_Object
 	protected $_category;
 
 	/**
+	 * Store the currently active language; to be restired at the end.
+	 *
+	 * @var string
+	 */
+	protected $_current_lang;
+
+	/**
 	 * {@inheritdoc}
 	 */
 	protected function pre_save( $properties = null )
@@ -88,8 +95,13 @@ class CMS_Contact_Entry extends Charcoal_Object
 	 */
 	public function post_save( $properties = null )
 	{
-		$this->send_confirmation_email();
-		$this->send_notification_email();
+		if ( $this instanceof CMS_Interface_Email_Confirmation ) {
+			$this->send_confirmation_email();
+		}
+
+		if ( $this instanceof CMS_Interface_Email_Notification ) {
+			$this->send_notification_email();
+		}
 
 		return parent::post_save($properties);
 	}
@@ -110,94 +122,5 @@ class CMS_Contact_Entry extends Charcoal_Object
 		}
 
 		return $this->_category;
-	}
-
-	/**
-	 * Send an entry confirmation email to the inquirer.
-	 *
-	 * @return boolean TRUE if the email was successfully sent
-	 */
-	public function send_confirmation_email()
-	{
-		$category = $this->category();
-
-		if ( ! $category || ! $category->v('send_confirmation_email') ) {
-			// This category was configured to NOT send confirmation email
-			return false;
-		}
-
-		// Cache currently active language,
-		// to be restored at the end.
-		$current_lang = _l();
-
-		// Set Charcoal to user's language preference
-		$l = Charcoal_L10n::get();
-		$l->set_lang( $this->user_lang );
-
-		$tpl = Charcoal_Template::get( $category->v('confirmation_email_template') );
-		$tpl->controller()->set_context( $this );
-
-		$email           = new Charcoal_Email;
-		$email->to       = [ $this->v('email') ];
-		$email->subject  = $category->p('confirmation_email_subject')->text();
-		$email->msg_html = $tpl->render();
-		$email->from     = $category->p('confirmation_email_from')->text();
-		$email->cc       = $category->v('confirmation_email_cc');
-		$email->bcc      = $category->v('confirmation_email_bcc');
-
-		// Send email
-		$response = $email->send();
-
-		// Restore original language settings
-		$l->set_lang( $current_lang );
-
-		return $response;
-	}
-
-	/**
-	 * Send a entry notification email to the administrators.
-	 *
-	 * @return boolean TRUE if the email was successfully sent
-	 */
-	public function send_notification_email()
-	{
-	}
-
-	/**
-	 * Get the replacement array for the confirmation email
-	 *
-	 * This was put into its own method so subclasses of CMS_Contact_Entry
-	 * can only redeclare this function and not the entire sender method.
-	 *
-	 * @return array The replacements in `key => value` pairs
-	 */
-	protected function _confirmation_email_replacements()
-	{
-		$category = $this->p('category')->as_object();
-
-		$replacements = array_merge(
-			$this->_user_metadata_email_replacements(),
-			[
-				'id'               => $this->id(),
-				'email'            => $this->p('email')->text(),
-				'telephone'        => $this->p('telephone')->text(),
-				'name_first'       => $this->p('name_first')->text(),
-				'name_last'        => $this->p('name_last')->text(),
-
-				'organization'     => $this->p('organization')->text(),
-				'title'            => $this->p('title')->text(),
-
-				'message'          => $this->p('message')->text(),
-				'subject'          => $this->p('subject')->text(),
-
-				'category_name'    => $category->p('name')->text(),
-				'category_subject' => $category->p('confirmation_email_subject')->text(),
-
-				'base_url'         => Charcoal::$config['URL'],
-				'lang'             => _l()
-			]
-		);
-
-		return $replacements;
 	}
 }
