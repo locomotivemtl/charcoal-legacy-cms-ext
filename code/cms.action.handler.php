@@ -11,6 +11,8 @@
  * @since      Version 2015-09-30
  */
 
+use \Negotiation\Negotiator;
+
 /**
  * Class: CMS Action Handler
  *
@@ -359,6 +361,10 @@ class CMS_Action_Handler
 	 */
 	public static function resolve_response()
 	{
+		$negotiator = new Negotiator;
+		$priorities = [ 'application/json', 'text/html', 'application/xhtml+xml', 'application/xml' ];
+		$media_type = $negotiator->getBest(getenv('HTTP_ACCEPT'), $priorities);
+
 		$default_options = [
 			'success'     => true,
 			'redirect_to' => ( getenv('HTTP_REFERER') ?: Charcoal::$config['URL'] ),
@@ -401,8 +407,7 @@ class CMS_Action_Handler
 
 		$options = parse_config( $default_options, $options );
 
-		if ( ( defined('IS_AJAX') && IS_AJAX ) || self::is_ajax_request() ) {
-
+		if ( 'application/json' === $media_type->getValue() ) {
 			if ( $options['success'] ) {
 				JSON::send_success($options['data']);
 			}
