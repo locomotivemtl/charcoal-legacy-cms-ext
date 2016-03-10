@@ -10,8 +10,15 @@
   },
 
   "properties": {
+    "id": {
+      "public_access": false
+    },
+    "active": {
+      "public_access": false
+    },
     "category": {
       "type": "object",
+      "public_access": false,
       "obj_type": "CMS_Contact_Category",
       "foreign_key": "ident",
       "label": {

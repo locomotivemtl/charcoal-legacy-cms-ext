@@ -30,8 +30,23 @@ trait CMS_Trait_Email_Confirmation
 			return false;
 		}
 
+		$template   = $this->build_confirmation_email_template( $category );
+		$rich_body  = $this->render_confirmation_email_rich_template( $template, $category );
+		$plain_body = $this->render_confirmation_email_plain_template( $template, $category );
+
 		$email = $this->create_confirmation_email_object();
-		$email->msg_html = $this->render_confirmation_email_template( $category );
+
+		if ( $template->ident() ) {
+			$email->template = $template->ident();
+		}
+
+		if ( $rich_body ) {
+			$email->msg_html = $rich_body;
+		}
+
+		if ( $plain_body ) {
+			$email->msg_txt = $plain_body;
+		}
 
 		$response = $email->send();
 
@@ -119,17 +134,41 @@ trait CMS_Trait_Email_Confirmation
 	}
 
 	/**
-	 * Render the confirmation email template.
+	 * Render the confirmation email template, for rich-text (HTML).
 	 *
-	 * @param  CMS_Contact_Category|null &$category The lead's related category, if any.
+	 * @param  Charcoal_Template_Controller  $template The template object to render.
+	 * @param  CMS_Contact_Category|null    &$category The lead's related category, if any.
 	 * @return Charcoal_Template_Controller
 	 */
-	protected function render_confirmation_email_template( &$category )
+	protected function render_confirmation_email_rich_template( $template, &$category )
 	{
-		$tpl = $this->build_confirmation_email_template( $category );
-		$tpl->controller()->set_context( $this );
+		$template->controller()->set_context( $this );
 
-		$template = $tpl->render();
+		return $template->render();
+	}
+
+	/**
+	 * Render the confirmation email template, for plain-text.
+	 *
+	 * @param  Charcoal_Template_Controller  $template The template object to render.
+	 * @param  CMS_Contact_Category|null    &$category The lead's related category, if any.
+	 * @return Charcoal_Template_Controller
+	 */
+	protected function render_confirmation_email_plain_template( $template, &$category )
+	{
+		unset( $template, $category );
+
+		$body = '';
+
+		foreach ($this->properties() as $propIdent => $property) {
+			if (is_a($property, 'Charcoal_Property') && $property->active()) {
+				if (!isset($property->public_access) || $property->public_access) {
+					$body .= $property->label() . ":\n" . $property->text() . "\n\n";
+				}
+			}
+		}
+
+		return strip_html( $body );
 	}
 
 	/**
