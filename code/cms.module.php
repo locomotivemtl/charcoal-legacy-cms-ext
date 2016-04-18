@@ -37,6 +37,16 @@ class CMS_Module extends Charcoal_Module
 	public static $session_key = 'cms.module';
 
 	/**
+	 * Retrieve the module's primary module
+	 *
+	 * @return string
+	 */
+	public static function ident()
+	{
+		return 'cms';
+	}
+
+	/**
 	 * Module initialisation
 	 *
 	 * This function should act as both the initialization of the module and the front-page main controller.
@@ -200,7 +210,7 @@ class CMS_Module extends Charcoal_Module
 		// Set up the language and the required CSV file
 		$l = Charcoal_L10n::get();
 		$l->set_lang($lang);
-		$l->add_resource_csv('pg', $lang);
+		$l->add_resource_csv(static::ident(), $lang);
 
 		if ( isset( $languages[ $lang ]['locale'] ) ) {
 			$locale = str_replace( '-', '_', $languages[ $lang ]['locale'] );
