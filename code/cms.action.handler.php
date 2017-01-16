@@ -363,7 +363,8 @@ class CMS_Action_Handler
 	{
 		$negotiator = new Negotiator;
 		$priorities = [ 'application/json', 'text/html', 'application/xhtml+xml', 'application/xml' ];
-		$media_type = $negotiator->getBest(getenv('HTTP_ACCEPT'), $priorities);
+		$accepted   = preg_replace('/(\*\/\*)(?!;q=)/i', '$1;q=0.8', getenv('HTTP_ACCEPT'));
+		$media_type = $negotiator->getBest($accepted, $priorities);
 
 		$default_options = [
 			'success'     => true,
