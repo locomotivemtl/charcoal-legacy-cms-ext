@@ -45,7 +45,7 @@
         "en": "Default section is loaded when the default URL (without any section) is reached, or usually when the logo is clicked. Typically, this should be a \"Home\" section.",
         "fr": "La section par défaut est chargée lorsqu'un utilisateur atteint l'URL par défaut (sans paramètre de section). Est également, à l'habitude, la section qui est chargée lorsque le logo est cliqué. Typiquement, ce devrait être une section \"Accueil\"."
       },
-      "input_type": "tree_select",
+      "input_type": "select",
       "input_options": {
         "tree_select": {
           "tree_property": "master",
