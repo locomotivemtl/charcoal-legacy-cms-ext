@@ -15,7 +15,6 @@
 use \Charcoal\Trait_Category;
 use \Charcoal\Trait_Category_Item;
 use \Charcoal\Trait_Hierarchy;
-use \Charcoal\Trait_Url;
 
 // Local Depdencies
 use \CMS\Trait_Menu_Aware;
@@ -99,14 +98,11 @@ use \CMS\Trait_Menu_Aware;
  * @package CMS\Objects
  */
 class CMS_Section extends CMS_Object_URI {
-	use Trait_Url,
-		Trait_Category,
+	use Trait_Category,
 		Trait_Category_Item,
 		Trait_Hierarchy,
 		Trait_Menu_Aware,
-		CMS_Trait_Template {
-			Trait_Url::url as _url;
-		}
+		CMS_Trait_Template;
 
 // Properties
 // ==========================================================================
@@ -316,7 +312,7 @@ class CMS_Section extends CMS_Object_URI {
 			return $lang . '/';
 		}
 
-		return $this->_url( $lang, $options );
+		return parent::url( $lang, $options );
 	}
 
 
